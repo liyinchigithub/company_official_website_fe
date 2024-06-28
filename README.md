@@ -10,11 +10,29 @@
 ## 技术栈
 
 - nodejs
+	- v14.21.3
+	- v12.22.12
 - vue
+	- 2.6 
 - elementUI
+ 	- 
 
 
-## 安装
+ 安装
+
+## npm
+```
+npm run dev
+```
+
+```
+npm run build
+```
+
+编译后项目文件
+dist
+
+## yarn
 ```
 yarn
 ```
@@ -31,8 +49,7 @@ yarn build
 
 ### 注意版本
 
-node版本（14） 16  18 可能会有问题  自测
-v14.21.3
+node版本 16  18 可能会有问题
 
 npm 版本
 6.14.18
