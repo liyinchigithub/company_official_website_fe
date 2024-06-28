@@ -1,0 +1,65 @@
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  overflow: hidden;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 1300px;
+  margin: 0 auto;
+}
+
+.center {
+  text-align: center;
+}
+
+.top {
+  margin-top: 30px;
+}
+
+.pad-top {
+  padding-top: 30px;
+}
+
+.top15 {
+  margin-top: 15px;
+}
+
+.top5 {
+  margin-top: 5px;
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.red {
+  color: red;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+.flex-start {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left {
+  text-align: left;
+}
