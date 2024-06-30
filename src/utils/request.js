@@ -41,21 +41,16 @@ service.interceptors.request.use(
 
 // response interceptor
 service.interceptors.response.use(
-    /**
-     * If you want to get http information such as headers or status
-     * Please return  response => response
-     */
-
-    /**
-     * Determine the request status by custom code
-     * Here is just an example
-     * You can also judge the status by HTTP Status Code
-     */
     response => {
         tryHideFullScreenLoading()
         const res = response.data
-        if (res.code !== 200) {
-            return Promise.reject(res || 'error')
+        if (res.code !== 0) { // 修改为后端返回的成功状态码
+            Message({
+                message: res.message || 'Error',
+                type: 'error',
+                duration: 5 * 1000
+            })
+            return Promise.reject(new Error(res.message || 'Error'))
         } else {
             return res
         }
