@@ -60,6 +60,8 @@ yarn build
 
 ## 允许跨域
 
+### 前端配置跨域
+
 >vue.config.js
 
 修改跨域请求后端的域名地址
@@ -89,7 +91,42 @@ module.exports = {
   }
 }
 ```
+### 后端配置跨域
 
+
+>com/cows/config/WebConfig.java
+
+```java
+package com.cows.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+/**
+ *
+ * @Description: 启用跨域资源共享
+ *
+ * */
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://127.0.0.1:9000") // 前端项目的地址
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
+    }
+}
+```
 
 ### 注意版本
 
