@@ -61,5 +61,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+@media (max-width: 768px) {
+  .el-carousel {
+    height: 300px;
+  }
+}
 </style>

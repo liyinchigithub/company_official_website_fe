@@ -3,39 +3,70 @@
 		<div class="container">
 			<h1 class="center">联系我们</h1>
 			<div class="flex">
-				<div class="info">
-					<div><i class="el-icon-phone"></i>电话：18888888888</div>
-					<div><i class="el-icon-message"></i>邮箱：youxiang@test.com</div>
-					<div><i class="el-icon-location-information"></i>地址：重庆市 · 渝北区 · 冉家坝</div>
+				<div class="info" v-if="footerData">
+					<div><i class="el-icon-phone"></i>电话：{{ footerData.phone }}</div>
+					<div><i class="el-icon-message"></i>邮箱：{{ footerData.email }}</div>
+					<div><i class="el-icon-location-information"></i>地址：{{ footerData.address }}</div>
 				</div>
-				<img style="width: 150px; height: 150px" src="@/assets/images/weChat-1.jpg"/>
+				<img v-if="footerData" :src="footerData.weChatImage" style="width: 150px; height: 150px"/>
 			</div>
 		</div>
-		<div class="other center">
+		<div class="other center" v-if="footerData">
 			<div class="flex-center">
-				<div class="item">渝ICP备152361966号</div>
-				<img class="img" src="@/assets/beian.png" alt="">
-				<div>渝公网安备 50010902056984号</div>
+				<a class="item" :href="'http://beian.miit.gov.cn/'" target="_blank">{{ footerData.icp }}</a>
+				<img class="img" src="@/assets/beian.png" alt="" style="width: 20px; height: 20px">
+				<div>{{ footerData.publicSecurity }}</div>
 			</div>
-			<p class="copyright">Copyright © 2022 XXX有限公司 版权所有</p>
+			<p class="copyright">{{ footerData.copyright }}</p>
 		</div>
-
 	</div>
 </template>
 
 <script>
+import { getFooterData } from '@/api/index'
+
 export default {
     name: 'Footer',
 
     data() {
-        return {};
+        return {
+            footerData: {
+                phone: '123-456-7890',
+                email: 'example@example.com',
+                address: '默认地址',
+                weChatImage: 'default-wechat-image.png',
+                icp: '默认ICP',
+                beianImage: 'default-beian-image.png',
+                publicSecurity: '默认公安信息',
+                copyright: '© 2023 默认版权'
+            }
+        };
     },
 
     mounted() {
-
+        const cachedFooterData = localStorage.getItem('footerData');
+        if (cachedFooterData) {
+            this.footerData = JSON.parse(cachedFooterData);
+        } else {
+            this.fetchFooterData();
+        }
     },
 
-    methods: {},
+    methods: {
+        async fetchFooterData() {
+            try {
+                const response = await getFooterData();
+                if (response.code === 0 && response.data.length > 0) {
+                    this.footerData = response.data[0];
+                    localStorage.setItem('footerData', JSON.stringify(this.footerData));
+                } else {
+                    console.error('Failed to fetch footer data:', response.message);
+                }
+            } catch (error) {
+                console.error('Failed to fetch footer data:', error);
+            }
+        }
+    },
 };
 </script>
 
@@ -49,6 +80,16 @@ export default {
   .other {
     .img {
       margin: 0 10px;
+    }
+
+    .item {
+      color: #606266;
+      font-size: 14px;
+      line-height: 30px;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     .copyright {
@@ -68,6 +109,20 @@ export default {
 
       .el-icon-location-information {
         margin-left: -1px;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 0 10px;
+    }
+    .info {
+      font-size: 12px;
+    }
+    .other {
+      .item, .copyright {
+        font-size: 12px;
       }
     }
   }

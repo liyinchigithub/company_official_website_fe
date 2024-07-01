@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-
 export const loginNum = (inStorageNo) => {
   return request({
     url: `/client/anno/loginNum?phone=${inStorageNo}`,

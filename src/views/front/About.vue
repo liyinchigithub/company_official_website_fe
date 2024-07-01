@@ -9,7 +9,8 @@
 			</el-breadcrumb>
 			<el-card class="top">
 				<div class="left">
-					<img class="top5" style="width: 150px; height: 150px;border: 1px solid #e1e1e1" src="../../assets/images/weChat-1.jpg"/>
+					<!-- <img class="top5" style="width: 150px; height: 150px;border: 1px solid #e1e1e1" src="../../assets/images/weChat-1.jpg"/> -->
+				关于我们。。。
 				</div>
 			</el-card>
 		</div>
@@ -40,5 +41,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.page {
+  padding: 20px;
 
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 5px;
+  }
+}
 </style>

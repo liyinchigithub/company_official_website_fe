@@ -45,11 +45,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container{
-  .introduce{
-	min-height: 200px;
-	padding-top: 100px;
+.container {
+  .introduce {
+    min-height: 200px;
+    padding-top: 100px;
+
+    @media (max-width: 768px) {
+      padding-top: 50px;
+    }
+
+    @media (max-width: 480px) {
+      padding-top: 20px;
+    }
   }
 }
-
 </style>

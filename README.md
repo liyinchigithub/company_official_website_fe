@@ -47,6 +47,50 @@ yarn dev
 yarn build
 ```
 
+
+# 配置修改
+
+## 域名修改
+
+>src/config/index.js
+
+## 请求头修改
+
+>src/utils/request.js
+
+## 允许跨域
+
+>vue.config.js
+
+修改跨域请求后端的域名地址
+
+```js
+module.exports = {
+  publicPath: './',
+  devServer: {
+    disableHostCheck: true,
+    port: 9000,
+    proxy: {
+      '/api/': {
+        target: 'http://127.0.0.1:8088',   // 测试环境
+        changeOrigin: true,  // 是否跨域
+        pathRewrite: {
+          '^/api/': ''
+        }
+      },
+    },
+  },
+  chainWebpack: config => {
+    config.plugin('html')
+      .tap(args => {
+        args[0].title = '智慧其心';
+        return args;
+      })
+  }
+}
+```
+
+
 ### 注意版本
 
 node版本 16  18 可能会有问题

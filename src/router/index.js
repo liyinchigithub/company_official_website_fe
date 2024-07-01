@@ -74,3 +74,7 @@ const router = new VueRouter({
 })
 
 export default router
+
+export function resetRouter() {
+    router.push({ path: '/login' })
+}

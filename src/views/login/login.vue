@@ -73,29 +73,44 @@ export default {
 
 <style lang="scss" scoped>
 .page {
-    height: 100vh;
+  height: 100vh;
 
-    .loginBox {
-        width: 100%;
-        height: 100%;
-        background-image: url(../../assets/login-bg-2.jpg);
-        background-size: cover;
-        background-position: 50%;
-        position: relative;
-        display: flex;
-        align-items: center;
+  .loginBox {
+    width: 100%;
+    height: 100%;
+    background-image: url(../../assets/login-bg-2.jpg);
+    background-size: cover;
+    background-position: 50%;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 768px) {
+      background-size: contain;
+    }
+  }
+
+  .box-card {
+    width: 400px;
+    position: absolute;
+    right: 150px;
+
+    .bottom-btn {
+      font-size: 14px;
+      margin-top: 5px;
     }
 
-    .box-card {
-        width: 400px;
-        position: absolute;
-        right: 150px;
-
-        .bottom-btn {
-            font-size: 14px;
-            margin-top: 5px;
-        }
+    @media (max-width: 768px) {
+      width: 300px;
+      right: 50px;
     }
+
+    @media (max-width: 480px) {
+      width: 100%;
+      right: 0;
+      padding: 10px;
+    }
+  }
 }
 </style>
 

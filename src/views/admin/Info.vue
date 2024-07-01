@@ -27,8 +27,8 @@ export default {
 
     methods: {},
 };
-</script>
 
+</script>
 <style lang="scss" scoped>
 .card {
   min-height: 500px;
@@ -37,6 +37,17 @@ export default {
     width: 100px;
     background: linear-gradient(to right, #1E6BDC, #FFFEFF);
   }
-}
 
+  @media (max-width: 768px) {
+    .title {
+      width: 80px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .title {
+      width: 60px;
+    }
+  }
+}
 </style>

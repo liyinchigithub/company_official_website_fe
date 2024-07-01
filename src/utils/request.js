@@ -1,29 +1,26 @@
 import axios from 'axios'
-import {MessageBox, Message} from 'element-ui'
-import {showFullScreenLoading, tryHideFullScreenLoading} from '@/utils/loading'
+import { MessageBox, Message } from 'element-ui'
+import { showFullScreenLoading, tryHideFullScreenLoading } from '@/utils/loading'
 import store from '@/store'
-import {baseUrl} from '@/config/index'
+import { baseUrl } from '@/config/index'
+import { getToken } from '@/utils/auth'
 
-import {
-    getToken,
-} from '@/utils/auth'
-// import { baseUrl } from '@/utils/baseurl'
-// create an axios instance
-const base = process.env.NODE_ENV == 'development' ? '/zcbg' : baseUrl
+// 创建一个 axios 实例
+const base = process.env.NODE_ENV === 'development' ? '/api' : baseUrl
 console.log(base, 'base-------')
 const service = axios.create({
-    baseURL: base, // url = base url + request url
-    // withCredentials: true, // send cookies when cross-domain requests
-    timeout: 100000 // request timeout  //请求超时
+    baseURL: base, // url = 基础 url + 请求 url
+    // withCredentials: true, // 当跨域请求时发送 cookies
+    timeout: 100000 // 请求超时
 })
 
-// request interceptor
+// 请求拦截器
 service.interceptors.request.use(
     config => {
         config.headers['token'] = getToken()
-        // do something before request is sent
+        // 在请求发送之前做一些处理
         if (config.headers.isLoading !== false) {
-            // 如果配置了isLoading: false，则不显示loading
+            // 如果配置了 isLoading: false，则不显示 loading
             showFullScreenLoading()
         }
         if (store.getters.token) {
@@ -32,14 +29,14 @@ service.interceptors.request.use(
         return config
     },
     error => {
-        // do something with request error
+        // 处理请求错误
         tryHideFullScreenLoading()
-        console.log(error) // for debug
+        console.log(error) // 用于调试
         return Promise.reject(error)
     }
 )
 
-// response interceptor
+// 响应拦截器
 service.interceptors.response.use(
     response => {
         tryHideFullScreenLoading()

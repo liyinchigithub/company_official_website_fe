@@ -48,10 +48,15 @@
   display: flex;
   justify-content: center;
 }
-.flex-start {
-  display: flex;
-  justify-content: start;
-  align-items: center;
+
+// .flex-start {
+//   display: flex;
+//   justify-content: start;
+//   align-items: center;
+// }
+
+.some-class {
+  align-items: flex-start;
 }
 
 .flex {
@@ -63,3 +68,5 @@
 .left {
   text-align: left;
 }
+
+

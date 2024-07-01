@@ -5,19 +5,18 @@ module.exports = {
     port: 9000,
     proxy: {
       '/api/': {
-        target: 'https://test.xxxx.com/api',   //测试环境,
-        changeOrigin: true,  //是否跨域
+        target: 'http://127.0.0.1:8088',   // 测试环境
+        changeOrigin: true,  // 是否跨域
         pathRewrite: {
           '^/api/': ''
         }
       },
     },
-
   },
   chainWebpack: config => {
     config.plugin('html')
       .tap(args => {
-        args[0].title = '官网';
+        args[0].title = '智慧其心';
         return args;
       })
   }

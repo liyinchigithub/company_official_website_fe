@@ -2,8 +2,8 @@
 	<div class="nav">
 		<div class="container">
 			<div class="logo">
-				<!--<img src="@/assets/logo.png" alt="" height="50px" width="50px" style="margin:15px 0 0 0">-->
-				<div style="font-size:26px;margin-right:50px" @click="$router.push('/home')">logo</div>
+				<img v-if="logoImage" :src="logoImage" alt="logo" height="50px" width="50px" style="margin:15px 0 0 0">
+				<div v-else style="font-size:26px;margin-right:50px" @click="$router.push('/home')">logo</div>
 				<div @click="toDetail(item,i)" :class="$route.path === item.path?'active':''" v-for="(item,i) in navList"
 					:key="i">
 					{{ item.name }}
@@ -12,7 +12,7 @@
 			<div class="login">
 				<div v-if="!isLogin" class="btn">
 					<div @click="login">登录</div>
-					<div @click="login('add')">注册</div>
+					<!-- <div @click="login('add')">注册</div> -->
 				</div>
 				<div v-else class="loginOut">
 					<el-dropdown trigger="hover">
@@ -60,18 +60,23 @@ export default {
             ],
             register: {},
             isLogin: null,
-            mobile: '18888888888'
+            mobile: '18888888888',
+            logoImage: null // 新增 logoImage 数据属性
         };
     },
     computed: {
         ...mapGetters(["avatar", "name", "roles", "isPay"]),
     },
     mounted() {
-        this.isLogin = localStorage.getItem("token") ? true : false
+        this.isLogin = localStorage.getItem("token") ? true : false;
+        const cachedFooterData = localStorage.getItem('footerData');
+        if (cachedFooterData) {
+            const footerData = JSON.parse(cachedFooterData);
+            this.logoImage = footerData.beianImage; // 从缓存中读取 beianImage
+        }
     },
 
     methods: {
-
         logout() {
             this.$message.success('退出成功')
             localStorage.removeItem('token')
@@ -97,7 +102,6 @@ export default {
                 path: item.path
             })
         },
-
     },
 };
 </script>
@@ -109,7 +113,7 @@ export default {
   height: 75px;
   z-index: 100;
   background: #ffffff;
-  width: 99.9vw;
+  width: 100vw;
   margin: 0 auto;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
@@ -176,13 +180,21 @@ export default {
     }
   }
 
-  // justify-content: center;
-
-  // align-items: center;
-
   .active {
     color: #0b2183;
     border-bottom: 3px solid #0b2183;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      width: 90%;
+    }
+    .logo {
+      width: 70%;
+    }
+    .login {
+      right: 0;
+    }
   }
 }
 </style>
