@@ -10,6 +10,12 @@ const routes = [
         redirect: '/home',
     },
     {
+        path: '/product/:id',
+        name: 'ProductDetail',
+        component: () => import('@/views/front/components/ProductDetail.vue'),
+        props: true
+    },
+    {
         path: '/login',
         component: () => import('@/views/login/login.vue'),
         meta: {

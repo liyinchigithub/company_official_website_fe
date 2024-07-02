@@ -13,9 +13,9 @@
 		</div>
 		<div class="other center" v-if="footerData">
 			<div class="flex-center">
-				<a class="item" :href="'http://beian.miit.gov.cn/'" target="_blank">{{ footerData.icp }}</a>
+				<a class="item" :href="'https://beian.mps.gov.cn/#/query/webSearch'" target="_blank">互联网ICP备案：闽ICP备{{ footerData.icp }}</a>
 				<img class="img" src="@/assets/beian.png" alt="" style="width: 20px; height: 20px">
-				<div>{{ footerData.publicSecurity }}</div>
+				<div>闽公安网备备案号：{{ footerData.publicSecurity }}</div>
 			</div>
 			<p class="copyright">{{ footerData.copyright }}</p>
 		</div>

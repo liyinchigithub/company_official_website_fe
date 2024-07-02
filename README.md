@@ -62,6 +62,18 @@ yarn build
 
 >src/router/index.js
 
+每新增一个页面，需要在路由中配置该页面的跳转路由
+
+```
+    // 商品详情
+ {
+        path: '/product/:id',
+        name: 'ProductDetail',
+        component: () => import('@/views/front/components/ProductDetail.vue'),
+        props: true
+    }
+```
+
 ## **请求地址**修改
 
 >src/api/index.js

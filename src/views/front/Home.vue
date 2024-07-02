@@ -12,10 +12,14 @@
 			<!--		<img class="top5" style="width: 150px; height: 150px;border: 1px solid #e1e1e1" src="../../assets/images/weChat-1.jpg"/>-->
 			<!--	</div>-->
 			<!--</el-card>-->
-			<div class="introduce">
+      <!-- <div class="introduce">
 				<h1 class="center">我是标题</h1>
 				<p class="center">介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容介绍内容</p>
-			</div>
+			</div> -->
+
+      <!-- 新增的商品卡片轮播图组件 -->
+      <ProductCarousel />
+			
 		</div>
 		<Footer class="top"/>
 	</div>
@@ -23,10 +27,14 @@
 
 <script>
 import Banner from './components/Banner'
+import ProductCarousel from './components/ProductCarousel' // 引入新组件
 
 export default {
     name: 'Home',
-    components: {Banner},
+    components: {
+      Banner,// 轮播图
+      ProductCarousel // 横向商品
+     },
     props: {},
     watch: {},
     data() {

@@ -13,6 +13,33 @@ export function getSwiperList() {
     throw error;
   });
 }
+// 获取横向商品列表
+export function getProductCarousel(){
+  return request({
+    url: '/v1/productsCarousels/getAllProductsCarousels', // 替换为你的后端接口路径
+    method: 'get',
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response.data;
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
+// 获取单个商品信息
+export function getProductById(id) {
+  return request({
+    url: `/v1/products/getProductById/${id}`, // 替换为你的后端接口路径
+    method: 'get',
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response.data;
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
 
 // 获取Footer数据
 export function getFooterData() {
