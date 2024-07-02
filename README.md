@@ -50,21 +50,29 @@ yarn build
 
 # 配置修改
 
-## 域名修改
+## **域名**修改
 
 >src/config/index.js
 
-## 请求头修改
+## **请求头**修改
 
 >src/utils/request.js
 
-## 允许跨域
+## **路由**修改
+
+>src/router/index.js
+
+## **请求地址**修改
+
+>src/api/index.js
+
+## **允许跨域**修改
 
 ### 前端配置跨域
 
 >vue.config.js
 
-修改跨域请求后端的域名地址
+修改前端跨域请求后端的域名地址
 
 ```js
 module.exports = {
@@ -91,8 +99,13 @@ module.exports = {
   }
 }
 ```
-### 后端配置跨域
+每个请求路径，会自动带上/api/
 
+http://localhost:9000/api/v1/carousels/getAllCarousels
+
+>src/api/index.js
+
+### 后端配置跨域
 
 >com/cows/config/WebConfig.java
 
