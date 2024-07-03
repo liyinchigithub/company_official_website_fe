@@ -17,7 +17,11 @@ const service = axios.create({
 // 请求拦截器
 service.interceptors.request.use(
     config => {
-        config.headers['token'] = getToken()
+        const token = getToken()
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`
+        }
+        config.headers['token'] = token
         // 在请求发送之前做一些处理
         if (config.headers.isLoading !== false) {
             // 如果配置了 isLoading: false，则不显示 loading

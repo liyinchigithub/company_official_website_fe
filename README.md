@@ -18,7 +18,7 @@
  	- 
 
 
- 安装
+# 安装
 
 ## npm
 ```
@@ -46,6 +46,16 @@ yarn dev
 ```
 yarn build
 ```
+
+# 页面
+
+## 官网页面
+
+>src/views/front
+
+## 后台管理页面
+
+>src/views/admin
 
 
 # 配置修改
@@ -126,6 +136,17 @@ module.exports = {
 http://localhost:9000/api/v1/carousels/getAllCarousels
 
 >src/api/index.js
+
+
+* 常见问题：文件上传请求地址是在indo.vue代码中，而不是引用index.js里面定义的，所以导致跨域问题
+
+* 解决办法：
+为了确保文件上传请求也通过代理进行，你可以将文件上传的 URL 修改为相对路径，并确保它符合代理配置
+
+
+```JavaScript
+```
+
 
 ### 后端配置跨域
 

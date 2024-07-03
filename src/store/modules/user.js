@@ -5,10 +5,11 @@ import {Message, Notification} from 'element-ui'
 import md5 from 'js-md5'
 import moment from "moment";
 
+// 初始状态
 const state = {
     token: getToken(), name: '游客', avatar: '', introduction: '', roles: [], mobile: '', id: '', isPay: false,
 }
-
+// 修改状态
 const mutations = {
     SET_TOKEN: (state, token) => {
         state.token = token
@@ -30,8 +31,9 @@ const mutations = {
 
 }
 
+// 异步操作
 const actions = {
-    // // user login
+    // 登录
     login({commit}, userInfo) {
         const {userName, password} = userInfo
         commit('SET_PASSWORD', password)
@@ -45,6 +47,7 @@ const actions = {
                 if (response.code === 0) {
                     localStorage.setItem('token', data.token)
                     commit('SET_TOKEN', data.token)
+                    setToken(data.token) // 将 token 存储到 Vuex 和 localStorage 中
                     resolve(response)
                 } else {
                     console.error('Store login error:', error); // 打印Store登录错误
@@ -62,7 +65,8 @@ const actions = {
             //   reject(error)
             // })
         })
-    }, // get user info
+    }, 
+    // 获取用户信息
     getInfo({commit, state}) {
         return new Promise((resolve, reject) => {
             const tokens = getToken()
@@ -97,7 +101,7 @@ const actions = {
         })
     },
 
-    // user logout
+    // 登出
     logout({commit, state, dispatch}) {
         return new Promise((resolve, reject) => {
             logout(state.token).then(() => {
@@ -106,7 +110,6 @@ const actions = {
                 removeToken()
                 resetRouter()
                 // reset visited views and cached views
-                // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
                 dispatch('tagsView/delAllViews', null, {root: true})
                 resolve()
             }).catch(error => {
@@ -115,7 +118,7 @@ const actions = {
         })
     },
 
-    // remove token
+    // 重置token
     resetToken({commit}) {
         return new Promise(resolve => {
             commit('SET_TOKEN', '')
@@ -125,7 +128,7 @@ const actions = {
         })
     },
 
-    // dynamically modify permissions
+    // 动态修改权限
     async changeRoles({commit, dispatch}, role) {
         const token = role + '-token'
         commit('SET_TOKEN', token)
