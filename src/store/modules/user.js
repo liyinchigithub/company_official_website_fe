@@ -33,13 +33,27 @@ const mutations = {
 const actions = {
     // // user login
     login({commit}, userInfo) {
-        const {username, password} = userInfo
-        commit('SET_TOKEN', password)
-        localStorage.setItem('token', password)
-        commit('SET_NAME', username)
+        const {userName, password} = userInfo
+        commit('SET_PASSWORD', password)
+        localStorage.setItem('SET_NAME', userName)
+        commit('SET_NAME', userName)
 
         return new Promise((resolve, reject) => {
-            resolve()
+            login(userInfo).then(response => {
+                const { data } = response
+                console.log('Store login response:', response); // 打印Store登录响应
+                if (response.code === 0) {
+                    localStorage.setItem('token', data.token)
+                    commit('SET_TOKEN', data.token)
+                    resolve(response)
+                } else {
+                    console.error('Store login error:', error); // 打印Store登录错误
+                    reject(new Error('账号或密码错误！'))
+                }
+            }).catch(error => {
+                reject(error)
+            })
+
             // login({email: username.trim(), password: md5Password, loginMode: 1}).then(response => {
             //   // 登录业务判断
             //   // ...
