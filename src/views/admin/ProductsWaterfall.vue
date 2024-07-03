@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<el-card class="card">
-			<div class="title"> 【基础信息配置】</div>
+			<div class="title"> 【瀑布流商品配置】</div>
 			<div class="center">
 				<!-- <img src="@/assets/avatar.png" width="100px" height="100px" alt=""> -->
 			</div>

@@ -68,6 +68,30 @@ const routes = [
                 meta: {
                     title: '基本信息'
                 }
+            },
+            {
+                path: '/Carousel',
+                name: 'Info',
+                component: () => import('@/views/admin/Carousel.vue'),
+                meta: {
+                    title: '轮播图配置'
+                }
+            },
+            {
+                path: '/ProductsCarousels',
+                name: 'Info',
+                component: () => import('@/views/admin/ProductsCarousels.vue'),
+                meta: {
+                    title: '轮播图配置'
+                }
+            },
+            {
+                path: '/ProductsWaterfall',
+                name: 'Info',
+                component: () => import('@/views/admin/ProductsWaterfall.vue'),
+                meta: {
+                    title: '瀑布流商品配置'
+                }
             }
         ]
     },

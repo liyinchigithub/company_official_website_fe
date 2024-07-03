@@ -7,14 +7,38 @@
 					:collapse="isCollapse" @select="select">
 					<el-submenu index="1">
 						<template slot="title">
-							<i class="el-icon-location"></i>
-							<span slot="title">基本信息</span>
+							<i class="el-icon-setting"></i>
+							<span slot="title">配置</span>
 						</template>
 						<el-menu-item index="/info">
 							<template slot="title">
 								<div class="flex-start">
-									<div class="dot"></div>
-									<div slot="title">基本信息</div>
+									<!-- <div class="dot"></div> -->
+									<div slot="title">基础信息</div>
+								</div>
+							</template>
+						</el-menu-item>
+            <el-menu-item index="/Carousel">
+							<template slot="title">
+								<div class="flex-start">
+									<!-- <div class="dot"></div> -->
+									<div slot="title">轮播图</div>
+								</div>
+							</template>
+						</el-menu-item>
+            <el-menu-item index="/ProductsCarousels">
+							<template slot="title">
+								<div class="flex-start">
+									<!-- <div class="dot"></div> -->
+									<div slot="title">横向商品</div>
+								</div>
+							</template>
+						</el-menu-item>
+            <el-menu-item index="/ProductsWaterfall">
+							<template slot="title">
+								<div class="flex-start">
+									<!-- <div class="dot"></div> -->
+									<div slot="title">瀑布流商品</div>
 								</div>
 							</template>
 						</el-menu-item>

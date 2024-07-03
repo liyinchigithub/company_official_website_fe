@@ -74,6 +74,16 @@ yarn build
     }
 ```
 
+### 路由视图
+
+>src/views/admin/Index.vue
+
+切换菜单，自动加载对应的视图
+
+#### 菜单配置
+
+>src/views/admin/Index.vue
+
 ## **请求地址**修改
 
 >src/api/index.js
@@ -152,6 +162,12 @@ public class WebConfig implements WebMvcConfigurer {
     }
 }
 ```
+
+# 前端token存储
+
+>src/store/modules/user.js
+
+
 
 ### 注意版本
 
