@@ -10,7 +10,12 @@
 			<el-card class="top">
 				<div class="left">
 					<!-- <img class="top5" style="width: 150px; height: 150px;border: 1px solid #e1e1e1" src="../../assets/images/weChat-1.jpg"/> -->
-				关于我们。。。
+				关于我们。。。 <br>
+				关于我们。。。 <br>
+				关于我们。。。 <br>
+				关于我们。。。 <br>
+				关于我们。。。 <br>
+
 				</div>
 			</el-card>
 		</div>
@@ -42,6 +47,9 @@ export default {
 
 <style lang="scss" scoped>
 .page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; // Ensure the page takes at least the full height of the viewport
   padding: 20px;
 
   @media (max-width: 768px) {
@@ -51,5 +59,10 @@ export default {
   @media (max-width: 480px) {
     padding: 5px;
   }
+}
+
+.container {
+  flex: 1; // Allow the container to grow and fill available space
+  margin-bottom: 20px; // Add space between container and footer
 }
 </style>

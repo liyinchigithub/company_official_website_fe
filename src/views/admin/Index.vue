@@ -115,8 +115,19 @@ export default {
       min-height: 500px;
       background: #fff;
     }
+  }
 
-
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      .menu {
+        width: 100%;
+        height: auto;
+      }
+      .appMain {
+        width: 100%;
+      }
+    }
   }
 }
 </style>

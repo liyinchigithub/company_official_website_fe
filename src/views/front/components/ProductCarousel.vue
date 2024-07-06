@@ -1,9 +1,9 @@
 <template>
     <div class="product-carousel">
-      <el-carousel :interval="4000" arrow="always">
+      <el-carousel arrow="always">
         <el-carousel-item v-for="item in products" :key="item.id">
-          <el-card @click.native="goToProductDetail(item.id)">
-            <img :src="item.image" class="product-image" />
+          <el-card @click.native="goToProductDetail(item.id)" class="product-card">
+            <img :src="item.image" class="product-image" @error="handleImageError" />
             <div class="product-info">
               <h3>{{ item.name }}</h3>
               <p>{{ item.description }}</p>
@@ -25,25 +25,65 @@
       };
     },
     async created() {
-     // 获取横向商品列表
+      // 获取横向商品列表
       this.products = await getProductCarousel();
     },
     methods: {
       goToProductDetail(id) {
         this.$router.push({ name: 'ProductDetail', params: { id } });
+      },
+      handleImageError(event) {
+        console.error('图片加载失败:', event.target.src);
+        event.target.src = require('@/assets/product/default.jpg'); // 替换为默认图片路径
       }
     }
   };
   </script>
   
-  <style scoped>
-  .product-carousel {
-    .product-image {
-      width: 100%;
-      height: auto;
+  <style lang="scss" scoped>
+.product-carousel {
+  .product-card {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 300px;
+    padding: 10px;
+  }
+
+  .product-info {
+    h3 {
+      font-size: 1.2em;
     }
-    .product-info {
-      text-align: center;
+    p {
+      font-size: 1em;
     }
   }
-  </style>
+
+  @media (max-width: 768px) {
+    .product-card {
+      padding: 5px;
+    }
+    .product-info {
+      h3 {
+        font-size: 1em;
+      }
+      p {
+        font-size: 0.8em;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-card {
+      padding: 5px;
+    }
+    .product-info {
+      h3 {
+        font-size: 1em;
+      }
+      p {
+        font-size: 0.8em;
+      }
+    }
+  }
+}
+</style>

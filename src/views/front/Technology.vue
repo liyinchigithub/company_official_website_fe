@@ -42,6 +42,9 @@ export default {
 
 <style lang="scss" scoped>
 .page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; // Ensure the page takes at least the full height of the viewport
   padding: 20px;
 
   @media (max-width: 768px) {
@@ -51,5 +54,10 @@ export default {
   @media (max-width: 480px) {
     padding: 5px;
   }
+}
+
+.container {
+  flex: 1; // Allow the container to grow and fill available space
+  margin-bottom: 20px; // Add space between container and footer
 }
 </style>

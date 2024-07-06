@@ -90,7 +90,12 @@ export default {
                     this.$message.error('保存失败: ' + response.message);
                 }
             } catch (error) {
-                this.$message.error('保存失败: ' + error);
+                // 判断是否是登录超时
+                if (error.response.status === 401) {
+                    this.$message.error('登录超时，请重新登录');
+                } else {
+                    this.$message.error('保存失败: ' + error);
+                }
             }
         },
         handleUploadSuccess(response) {

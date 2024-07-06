@@ -3,7 +3,8 @@ import { MessageBox, Message } from 'element-ui'
 import { showFullScreenLoading, tryHideFullScreenLoading } from '@/utils/loading'
 import store from '@/store'
 import { baseUrl } from '@/config/index'
-import { getToken } from '@/utils/auth'
+import { getToken, removeToken } from '@/utils/auth' // 添加 removeToken 导入
+import router from '@/router' // 添加 router 导入
 
 // 创建一个 axios 实例
 const base = process.env.NODE_ENV === 'development' ? '/api' : baseUrl
@@ -58,11 +59,37 @@ service.interceptors.response.use(
     },
     error => {
         console.log(error, 'error-request')
-        Message({
-            message: '内部错误，请联系管理员',
-            type: 'error',
-            duration: 5 * 1000
-        })
+        if (error.response && error.response.status === 302) {
+            // 处理 302 状态码
+            removeToken() // 清除存储中的 token
+            store.dispatch('user/resetToken') // 清除 Vuex 中的 token
+            // 提示登录超时
+            Message({
+                message: '登录超时，请重新登录',
+                type: 'error',
+                duration: 5 * 1000
+            })
+            // 跳转到登录页
+            router.push('/login') // 跳转到登录页
+        } else if (error.message.includes('Network Error')) {
+            // 处理网络错误
+            removeToken() // 清除存储中的 token
+            store.dispatch('user/resetToken') // 清除 Vuex 中的 token
+            // 提示网络错误
+            Message({
+                message: '登录超时，请重新登录',
+                type: 'error',
+                duration: 5 * 1000
+            })
+            // 跳转到登录页
+            router.push('/login') // 跳转到登录页
+        } else {
+            Message({
+                message: '内部错误，请联系管理员',
+                type: 'error',
+                duration: 5 * 1000
+            })
+        }
         tryHideFullScreenLoading()
         return Promise.reject(error)
     }

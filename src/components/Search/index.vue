@@ -37,8 +37,19 @@ export default {
 .search {
   display: flex;
   align-items: center;
+
   .item {
     margin-left: 15px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .item {
+      margin-left: 0;
+      margin-top: 10px;
+    }
   }
 }
 </style>
