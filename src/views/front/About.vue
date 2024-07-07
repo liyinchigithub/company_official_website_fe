@@ -1,5 +1,5 @@
 <template>
-	<div class="page">
+	<div>
 		<Nav/>
 		<Banner/>
 		<div class="container">
@@ -36,7 +36,6 @@ export default {
         return {};
     },
 
-
     mounted() {
 
     },
@@ -63,6 +62,6 @@ export default {
 
 .container {
   flex: 1; // Allow the container to grow and fill available space
-  margin-bottom: 20px; // Add space between container and footer
+  margin-bottom: 100px; // Add space between container and footer
 }
 </style>

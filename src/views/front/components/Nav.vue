@@ -3,7 +3,7 @@
 		<div class="container">
 			<div class="logo">
 				<img v-if="logoImage" :src="logoImage" alt="logo" height="50px" width="50px" style="margin:15px 0 0 0">
-				<div v-else style="font-size:26px;margin-right:50px" @click="$router.push('/home')">logo</div>
+				<!-- <div v-else style="font-size:26px;margin-right:50px" @click="$router.push('/home')">logo</div> -->
 				<div @click="toDetail(item,i)" :class="$route.path === item.path?'active':''" v-for="(item,i) in navList"
 					:key="i">
 					{{ item.name }}
@@ -50,8 +50,8 @@ export default {
                     path: '/home',
                 },
                 {
-                    name: '技术支持',
-                    path: '/technology',
+                    name: '产品与服务',
+                    path: '/ProductService',
                 },
                 {
                     name: '关于我们',
@@ -72,7 +72,9 @@ export default {
         const cachedFooterData = localStorage.getItem('footerData');
         if (cachedFooterData) {
             const footerData = JSON.parse(cachedFooterData);
-            this.logoImage = footerData.beianImage; // 从缓存中读取 beianImage
+            this.$nextTick(() => {
+                this.logoImage = footerData.beianImage; // 从缓存中读取 beianImage
+            });
         }
     },
 

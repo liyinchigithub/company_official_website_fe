@@ -38,11 +38,11 @@ const routes = [
         }
     },
     {
-        path: '/technology',
-        name: 'Technology',
-        component: () => import('@/views/front/Technology.vue'),
+        path: '/productService',
+        name: 'ProductService',
+        component: () => import('@/views/front/ProductService.vue'),
         meta: {
-            title: '技术支持'
+            title: '产品与服务'
         }
     },
     {
@@ -67,6 +67,14 @@ const routes = [
                 component: () => import('@/views/admin/Info.vue'),
                 meta: {
                     title: '基本信息'
+                }
+            },
+            {
+                path: '/Products',
+                name: 'Info',
+                component: () => import('@/views/admin/Products.vue'),
+                meta: {
+                    title: '商品配置'
                 }
             },
             {

@@ -103,7 +103,12 @@ export default {
                 this.footerData.weChatImage = `${baseUrl}/v1/getLatestImage?fileName=${response.data}`;
                 this.$message.success('图片上传成功');
             } else {
-                this.$message.error('图片上传失败: ' + response.message);
+                // 判断是否是登录超时
+                if (response.code === 401) {
+                    this.$message.error('登录超时，请重新登录');
+                }else{
+                    this.$message.error('图片上传失败: ' + response.message);
+                }
             }
         },
         beforeUpload(file) {
@@ -121,7 +126,12 @@ export default {
                 const response = await service.post(this.uploadUrl, formData);
                 this.handleUploadSuccess(response);
             } catch (error) {
-                this.$message.error('图片上传失败: ' + error);
+                // 判断是否是登录超时
+                if (response.code === 401) {
+                    this.$message.error('登录超时，请重新登录');
+                }else{
+                    this.$message.error('图片上传失败: ' + response.message);
+                }
             }
         }
     }

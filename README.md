@@ -189,6 +189,14 @@ public class WebConfig implements WebMvcConfigurer {
 >src/store/modules/user.js
 
 
+# 新增页面
+
+1. 配置新增页面到路由中
+
+>src/router/index.js
+
+2.
+
 
 ### 注意版本
 

@@ -71,6 +71,20 @@ export function updateFooterData(data) {
   });
 }
 
+// 获取商品分类
+export function getProductCategories() {
+  return request({
+    url: '/v1/productCategories/getAllProductCategories',
+    method: 'get',
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response.data;
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
 // 获取gps坐标
 export function getList (params) {
   return request({
