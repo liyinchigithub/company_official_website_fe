@@ -43,9 +43,9 @@ export default {
     },
 
     methods: {
-        fetchProducts() {
+      fetchProducts() {
             getProductCarousel().then(response => {
-                this.products = response;
+                this.products = response.data; // 访问response.data
             }).catch(error => {
                 console.error('Failed to fetch products:', error);
             });

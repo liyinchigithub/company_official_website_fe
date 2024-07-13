@@ -23,7 +23,8 @@
     },
     async created() {
       const productId = this.$route.params.id;
-      this.product = await getProductById(productId);
+const response = await getProductById(productId);
+this.product = response.data; // 访问response.data
     }
   };
   </script>

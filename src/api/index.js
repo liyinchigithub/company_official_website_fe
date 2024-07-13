@@ -1,6 +1,5 @@
 import request from '@/utils/request'
 
-
 // 获取轮播图数据
 export function getSwiperList() {
   return request({
@@ -8,12 +7,13 @@ export function getSwiperList() {
     method: 'get',
   }).then(response => {
     console.log('API request successful:', response); // 打印API请求成功的响应
-    return response;
+    return response; // 返回整个response对象
   }).catch(error => {
     console.error('API request failed:', error); // 打印API请求失败的错误
     throw error;
   });
 }
+
 // 获取横向商品列表
 export function getProductCarousel(){
   return request({
@@ -21,7 +21,22 @@ export function getProductCarousel(){
     method: 'get',
   }).then(response => {
     console.log('API request successful:', response); // 打印API请求成功的响应
-    return response.data;
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
+// 搜索商品
+export function searchProductsByName(name) {
+  return request({
+    url: `/v1/products/searchProductsByName`,
+    method: 'get',
+    params: { name }
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
   }).catch(error => {
     console.error('API request failed:', error); // 打印API请求失败的错误
     throw error;
@@ -35,7 +50,7 @@ export function getProductById(id) {
     method: 'get',
   }).then(response => {
     console.log('API request successful:', response); // 打印API请求成功的响应
-    return response.data;
+    return response; // 返回整个response对象
   }).catch(error => {
     console.error('API request failed:', error); // 打印API请求失败的错误
     throw error;
@@ -49,7 +64,7 @@ export function getFooterData() {
     method: 'get',
   }).then(response => {
     console.log('API request successful:', response); // 打印API请求成功的响应
-    return response;
+    return response; // 返回整个response对象
   }).catch(error => {
     console.error('API request failed:', error); // 打印API请求失败的错误
     throw error;
@@ -64,7 +79,21 @@ export function updateFooterData(data) {
     data
   }).then(response => {
     console.log('API request successful:', response); // 打印API请求成功的响应
-    return response;
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
+// 获取品牌数据
+export function getBrands() {
+  return request({
+    url: '/v1/brands/getAllBrands',
+    method: 'get',
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
   }).catch(error => {
     console.error('API request failed:', error); // 打印API请求失败的错误
     throw error;
@@ -78,7 +107,52 @@ export function getProductCategories() {
     method: 'get',
   }).then(response => {
     console.log('API request successful:', response); // 打印API请求成功的响应
-    return response.data;
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
+// 新增商品
+export function addProduct(data) {
+  return request({
+    url: '/v1/products/addProduct',
+    method: 'post',
+    data
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
+
+// 获取分页商品列表
+export function getProductsPaged(page, size, sortField) {
+  return request({
+    url: `/v1/products/getProductsPaged?page=${page}&size=${size}&sortField=${sortField}`,
+    method: 'get',
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
+// 文件上传
+export function uploadFile(data) {
+  return request({
+    url: '/v1/fileUpload/upload',
+    method: 'post',
+    data
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
   }).catch(error => {
     console.error('API request failed:', error); // 打印API请求失败的错误
     throw error;

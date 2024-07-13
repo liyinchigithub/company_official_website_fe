@@ -18,6 +18,14 @@
 								</div>
 							</template>
 						</el-menu-item>
+            <el-menu-item index="/Brands">
+							<template slot="title">
+								<div class="flex-start">
+									<!-- <div class="dot"></div> -->
+									<div slot="title">商品品牌</div>
+								</div>
+							</template>
+						</el-menu-item>
             <el-menu-item index="/Products">
 							<template slot="title">
 								<div class="flex-start">

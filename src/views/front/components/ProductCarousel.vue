@@ -25,9 +25,10 @@
       };
     },
     async created() {
-      // 获取横向商品列表
-      this.products = await getProductCarousel();
-    },
+       // 获取横向商品列表
+        const response = await getProductCarousel();
+        this.products = response.data; // 访问response.data
+        },
     methods: {
       goToProductDetail(id) {
         this.$router.push({ name: 'ProductDetail', params: { id } });
