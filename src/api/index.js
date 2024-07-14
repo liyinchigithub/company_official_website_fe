@@ -100,6 +100,48 @@ export function getBrands() {
   });
 }
 
+// 新增品牌
+export function addBrand(data) {
+  return request({
+    url: '/v1/brands/addBrand',
+    method: 'post',
+    data
+  });
+}
+
+// 分页查询品牌
+export function getBrandsPaged(page, size, sortField) {
+  return request({
+    url: `/v1/brands/?page=${page}&size=${size}&sortField=${sortField}`,
+    method: 'get'
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
+// 删除品牌
+export function deleteBrandById(id) {
+  return request({
+    url: `/v1/brands/deleteBrand/${id}`,
+    method: 'delete'
+  });
+}
+
+// 更新品牌
+export function updateBrand(data) {
+  return request({
+    url: '/v1/brands/updateBrand',
+    method: 'put',
+    data
+  });
+}
+
+
+
 // 获取商品分类
 export function getProductCategories() {
   return request({
