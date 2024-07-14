@@ -22,7 +22,7 @@
 						</div>
 						<el-dropdown-menu slot="dropdown">
 							<el-dropdown-item @click.native="info">
-								<span>个人信息</span>
+								<span>后台管理</span>
 							</el-dropdown-item>
 							<el-dropdown-item divided @click.native="logout">
 								<span>退出登录</span>

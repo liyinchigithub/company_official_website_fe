@@ -144,6 +144,35 @@ export function getProductsPaged(page, size, sortField) {
   });
 }
 
+// 删除商品
+export function deleteProductById(id) {
+  return request({
+    url: `/v1/products/deleteProduct/${id}`,
+    method: 'delete',
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
+// 更新商品
+export function updateProduct(data) {
+  return request({
+    url: '/v1/products/updateProduct',
+    method: 'put',
+    data
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
 // 文件上传
 export function uploadFile(data) {
   return request({

@@ -70,8 +70,16 @@ const routes = [
                 }
             },
             {
+                path: '/Brands',
+                name: 'Brands',
+                component: () => import('@/views/admin/Brands.vue'),
+                meta: {
+                    title: '品牌配置'
+                }
+            },
+            {
                 path: '/Products',
-                name: 'Info',
+                name: 'Products',
                 component: () => import('@/views/admin/Products.vue'),
                 meta: {
                     title: '商品配置'
@@ -79,7 +87,7 @@ const routes = [
             },
             {
                 path: '/Carousel',
-                name: 'Info',
+                name: 'Carousel',
                 component: () => import('@/views/admin/Carousel.vue'),
                 meta: {
                     title: '轮播图配置'
@@ -87,7 +95,7 @@ const routes = [
             },
             {
                 path: '/ProductsCarousels',
-                name: 'Info',
+                name: 'ProductsCarousels',
                 component: () => import('@/views/admin/ProductsCarousels.vue'),
                 meta: {
                     title: '轮播图配置'
@@ -95,7 +103,7 @@ const routes = [
             },
             {
                 path: '/ProductsWaterfall',
-                name: 'Info',
+                name: 'ProductsWaterfall',
                 component: () => import('@/views/admin/ProductsWaterfall.vue'),
                 meta: {
                     title: '瀑布流商品配置'

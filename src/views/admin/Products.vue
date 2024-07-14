@@ -14,7 +14,13 @@
             <el-table-column prop="name" label="商品名称"></el-table-column>
             <el-table-column prop="salePrice" label="销售价格"></el-table-column>
             <el-table-column prop="stockQuantity" label="库存数量"></el-table-column>
-            <!-- 其他列 -->
+            <!-- 新增的操作列 -->
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button size="mini" @click="viewProduct(scope.row)">查看</el-button>
+                <el-button size="mini" type="danger" @click="confirmDeleteProduct(scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
           </el-table>
           <!-- 分页 -->
           <el-pagination
@@ -95,11 +101,59 @@
           <el-button type="primary" @click="submitForm('newProductForm')">确定</el-button>
         </div>
       </el-dialog>
+      <!-- 查看商品弹窗 -->
+      <el-dialog title="查看商品" :visible.sync="viewProductDialogVisible">
+        <el-form :model="currentProduct" label-position="top">
+          <el-form-item label="商品名称">
+            <el-input v-model="currentProduct.name" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="商品封面图片">
+            <img :src="currentProduct.coverImage" alt="商品封面图片" style="width: 100px; height: 100px;" />
+          </el-form-item>
+          <el-form-item label="商品详情图片">
+            <el-upload
+              class="upload-demo"
+              list-type="picture-card"
+              :file-list="(currentProduct.detailImages || []).map(url => ({ name: url, url }))"
+              disabled>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="商品描述">
+            <el-input type="textarea" v-model="currentProduct.description" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="销售价格">
+            <el-input v-model="currentProduct.salePrice" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="成本价格">
+            <el-input v-model="currentProduct.costPrice" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="库存数量">
+            <el-input v-model="currentProduct.stockQuantity" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="商品品牌">
+            <el-input v-model="currentProduct.brand" disabled></el-input>
+          </el-form-item>
+          <el-form-item label="商品分类ID">
+            <el-input v-model="currentProduct.categoryId" disabled></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="viewProductDialogVisible = false">关闭</el-button>
+        </div>
+      </el-dialog>
+    <!-- 删除确认弹窗 -->
+    <el-dialog title="确认删除" :visible.sync="deleteProductDialogVisible">
+        <span>你确定要删除这个商品吗？</span>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="deleteProductDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="deleteProduct">确定</el-button>
+        </div>
+      </el-dialog>
     </div>
   </template>
   
   <script>
-  import { getProductById, getProductCarousel, getProductCategories, getBrands, addProduct, uploadFile, getProductsPaged, searchProductsByName } from '@/api/index.js';
+  import { deleteProductById,getProductById, getProductCarousel, getProductCategories, getBrands, addProduct, uploadFile, getProductsPaged, searchProductsByName } from '@/api/index.js';
   import { baseUrl } from '@/config/index';
   
   export default {
@@ -137,7 +191,11 @@
                   stockQuantity: [{ required: true, message: '请输入库存数量', trigger: 'blur' }],
                   brand: [{ required: true, message: '请选择商品品牌', trigger: 'change' }],
                   categoryId: [{ required: true, message: '请选择商品分类', trigger: 'change' }],
-              }
+              },
+              viewProductDialogVisible: false,
+              deleteProductDialogVisible: false,
+              currentProduct: {},
+              productToDelete: null
           };
       },
       mounted() {
@@ -286,6 +344,37 @@
                       return false;
                   }
               });
+          },
+          viewProduct(product) {
+              // 实现查看商品的逻辑
+              this.currentProduct = { ...product };
+              this.viewProductDialogVisible = true;
+              console.log('查看商品:', product);
+          },
+          // 确认删除商品
+          confirmDeleteProduct(product) {
+              this.productToDelete = product;
+              this.deleteProductDialogVisible = true;
+          },
+          async deleteProduct() {
+              if (!this.productToDelete) {
+                  this.$message.error('未选择要删除的商品');
+                  return;
+              }
+              try {
+                  // 实现删除商品的逻辑
+                  const response = await deleteProductById(this.productToDelete.id);
+                  if (response.code === 0) {
+                      this.$message.success('删除成功');
+                      this.fetchProducts(); // 重新获取商品列表
+                      this.deleteProductDialogVisible = false;
+                      this.productToDelete = null; // 重置 productToDelete
+                  } else {
+                      this.$message.error('删除失败: ' + response.message);
+                  }
+              } catch (error) {
+                  this.$message.error('删除失败: ' + error.message);
+              }
           }
       }
   };
