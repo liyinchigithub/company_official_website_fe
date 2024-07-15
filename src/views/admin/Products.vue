@@ -14,6 +14,17 @@
           <el-table-column prop="name" label="商品名称"></el-table-column>
           <el-table-column prop="salePrice" label="销售价格"></el-table-column>
           <el-table-column prop="stockQuantity" label="库存数量"></el-table-column>
+          <!-- 新增的商品封面图片列 -->
+          <el-table-column label="商品封面图片">
+            <template slot-scope="scope">
+              <el-image
+                style="width: 50px; height: 50px"
+                :src="scope.row.coverImage"
+                @click="showImageDialog(scope.row.coverImage)"
+                preview-src-list="[scope.row.coverImage]"
+              ></el-image>
+            </template>
+          </el-table-column>
           <!-- 新增的操作列 -->
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -132,6 +143,10 @@
         <el-button type="primary" @click="deleteProduct">确定</el-button>
       </div>
     </el-dialog>
+     <!-- 图片查看弹窗 -->
+     <el-dialog :visible.sync="imageDialogVisible" width="30%">
+      <img :src="currentImage" style="width: 100%;" />
+    </el-dialog>
   </div>
 </template>
   
@@ -143,13 +158,13 @@ export default {
   name: 'Products',
   data() {
     return {
-      searchQuery: '',
-      products: [],
-      currentPage: 1,
-      pageSize: 10,
-      totalProducts: 0,
-      addProductDialogVisible: false,
-      newProduct: {
+      searchQuery: '',// 搜索框的值
+      products: [],// 商品列表
+      currentPage: 1,// 当前页
+      pageSize: 10,// 每页显示的数量
+      totalProducts: 0,// 总商品数
+      addProductDialogVisible: false,// 新增商品弹窗是否显示
+      newProduct: { // 新增商品的数据
         name: '',
         coverImage: '',
         detailImages: [],
@@ -160,11 +175,11 @@ export default {
         brand: null,
         categoryId: null,
       },
-      categories: [],
-      brands: [],
+      categories: [],// 商品分类列表
+      brands: [],// 商品品牌列表
       uploadUrl: '/api/v1/fileUpload/upload', // 修改为相对路径
-      detailImageList: [],
-      rules: {
+      detailImageList: [],// 商品详情图片列表
+      rules: {  // 表单验证规则
         name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
         coverImage: [{ required: true, message: '请上传商品封面图片', trigger: 'change' }],
         detailImages: [{ required: true, message: '请上传商品详情图片', trigger: 'change' }],
@@ -175,10 +190,12 @@ export default {
         brand: [{ required: true, message: '请选择商品品牌', trigger: 'change' }],
         categoryId: [{ required: true, message: '请选择商品分类', trigger: 'change' }],
       },
-      viewProductDialogVisible: false,
-      deleteProductDialogVisible: false,
-      currentProduct: {},
-      productToDelete: null
+      viewProductDialogVisible: false,// 查看商品弹窗是否显示
+      deleteProductDialogVisible: false, // 删除商品弹窗是否显示
+      currentProduct: {},// 当前商品
+      productToDelete: null,// 要删除的商品
+      imageDialogVisible: false,// 图片查看弹窗是否显示
+       currentImage: ''// 用于存储当前要查看的图片
     };
   },
   mounted() {
@@ -366,6 +383,10 @@ export default {
       } catch (error) {
         this.$message.error('删除失败: ' + error.message);
       }
+    },
+    showImageDialog(imageUrl) {
+      this.currentImage = imageUrl;
+      this.imageDialogVisible = true;
     }
   }
 };
