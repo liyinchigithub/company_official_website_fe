@@ -5,7 +5,7 @@
 			<div class="center">
 				<!-- <img src="@/assets/avatar.png" width="100px" height="100px" alt=""> -->
 			</div>
-			<el-form :model="footerData" label-width="120px">
+			<el-form :model="footerData" label-width="120px" class="input-width">
 				<el-form-item label="电话">
 					<el-input v-model="footerData.phone"></el-input>
 				</el-form-item>
@@ -158,5 +158,9 @@ export default {
       width: 60px;
     }
   }
+}
+
+.input-width {
+    width: 850px; // 统一设置输入框宽度
 }
 </style>

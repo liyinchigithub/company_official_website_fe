@@ -108,7 +108,15 @@ const routes = [
                 meta: {
                     title: '瀑布流商品配置'
                 }
-            }
+            },
+            {
+                path: '/BrandAuthorizationCertificate',
+                name: 'BrandAuthorizationCertificate',
+                component: () => import('@/views/admin/BrandAuthorizationCertificate.vue'),
+                meta: {
+                    title: '品牌授权证书配置'
+                }
+            },
         ]
     },
 ]

@@ -10,10 +10,10 @@
           <el-button type="success" @click="showAddProductDialog">新增商品</el-button>
         </div>
         <!-- 商品列表 -->
-        <el-table :data="products" style="width: 100%">
-          <el-table-column prop="name" label="商品名称"></el-table-column>
-          <el-table-column prop="salePrice" label="销售价格"></el-table-column>
-          <el-table-column prop="stockQuantity" label="库存数量"></el-table-column>
+        <el-table :data="products" style="width: 100%" stripe>
+          <el-table-column prop="name" label="商品名称" sortable></el-table-column>
+          <el-table-column prop="salePrice" label="销售价格" sortable></el-table-column>
+          <el-table-column prop="stockQuantity" label="库存数量" sortable></el-table-column>
           <!-- 新增的商品封面图片列 -->
           <el-table-column label="商品封面图片">
             <template slot-scope="scope">

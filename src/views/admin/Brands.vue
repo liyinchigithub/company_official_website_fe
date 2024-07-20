@@ -5,13 +5,13 @@
         <div class="center">
           <!-- 搜索框 -->
         <div class="search-bar">
-          <el-input v-model="searchQuery" placeholder="请输入品牌名称"></el-input>
-          <el-button type="primary" @click="searchBrands">搜索</el-button>
-          <el-button type="success" @click="showAddBrandDialog">新增品牌</el-button>
+          <el-input v-model="searchQuery" placeholder="请输入品牌名称" class="search-input"></el-input>
+          <el-button type="primary" @click="searchBrands" class="search-button">搜索</el-button>
+          <el-button type="success" @click="showAddBrandDialog" class="search-button">新增品牌</el-button>
         </div>
         <!-- 品牌列表 -->
-        <el-table :data="brands" style="width: 100%">
-          <el-table-column prop="name" label="品牌名称"></el-table-column>
+        <el-table :data="brands" style="width: 100%" stripe>
+          <el-table-column prop="name" label="品牌名称" sortable> </el-table-column>
           <el-table-column label="品牌Logo">
             <template slot-scope="scope">
               <el-image
@@ -299,9 +299,19 @@
     }
   }
   
-  .search-bar {
-    margin: 20px 0;
-    display: flex;
-    justify-content: space-between;
-  }
+.search-bar {
+  margin: 20px 0;
+  display: flex;
+  align-items: center; // 垂直居中
+  justify-content: flex-start; // 左对齐
+}
+
+.search-input {
+  margin-right: 10px; // 输入框右侧间距
+  width: 400px;
+}
+
+.search-button {
+  margin-right: 5px; // 搜索按钮右侧间距
+}
   </style>

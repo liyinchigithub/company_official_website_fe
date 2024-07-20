@@ -261,6 +261,84 @@ export function uploadFile(data) {
   });
 }
 
+// 新增品牌授权证书 
+export async function addCertificate(certificate) {
+   try {
+    const response = await request({
+      url: '/v1/certificates/addCertificate',
+      method: 'post',
+      data: certificate
+    });
+    return response;
+  } catch (error) {
+    console.error('Error adding certificate:', error);
+    throw error;
+  }
+}
+
+
+
+// 品牌授权书分页查询
+export async function getCertificatesPaged(page, size, sortField) {
+  try {
+    const response = await request({
+      url: '/v1/certificates/page',
+      method: 'get',
+      params: { page, size, sortField }
+    });
+    return response;
+  } catch (error) {
+    console.error('Error fetching certificates:', error);
+    throw error;
+  }
+}
+
+// 更新品牌授权证书/v1/certificates/updateCertificate
+export async function updateCertificate(certificate) { 
+  try {
+    const response = await request({
+      url: '/v1/certificates/updateCertificate',
+      method: 'put',
+      data: certificate
+    });
+    return response;
+  } catch (error) {
+    console.error('Error updating certificate:', error);
+    throw error;
+  }
+}
+
+// 搜索品牌授权证书 /v1/certificates/search?name=1
+export async function searchCertificatesByName(name) {
+  try {
+    const response = await request({
+      url: '/v1/certificates/search',
+      method: 'get',
+      params: { name }
+    });
+    return response;
+  } catch (error) {
+    console.error('Error searching certificates:', error);
+    throw error;
+  }
+}
+
+// 删除品牌授权证书 /v1/certificates/deleteCertificate/1
+
+export async function deleteCertificateById(id) {
+  try {
+    const response = await request({
+      url: `/v1/certificates/deleteCertificate/${id}`,
+      method: 'delete'
+    });
+    return response;
+  } catch (error) {
+    console.error('Error deleting certificate:', error);
+    throw error;
+  }
+}
+
+
 // 获取gps坐标
 export function getList (params) {
   return request({
