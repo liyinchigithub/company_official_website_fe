@@ -53,7 +53,7 @@ export default {
                     if (response.code === 0) {
                         localStorage.setItem('token', response.data.token);
                         this.$router.push({
-                            path: this.redirect || "/",
+                            path: this.redirect || "/info", 
                             query: this.otherQuery,
                         });
                     } else {

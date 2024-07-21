@@ -14,8 +14,8 @@ export function getSwiperList() {
   });
 }
 
-// 获取横向商品列表
-export function getProductCarousel(){
+// 获取横向商品
+export function getAllProductCarousel(){
   return request({
     url: '/v1/productsCarousels/getAllProductsCarousels', // 替换为你的后端接口路径
     method: 'get',
@@ -27,6 +27,21 @@ export function getProductCarousel(){
     throw error;
   });
 }
+
+// 获取横向商品，通过ID /v1/productsCarousels/getProductsCarouselsById/1
+export function getProductCarouselById(id) { 
+  return request({
+    url: `/v1/productsCarousels/getProductsCarouselsById/${id}`, // 替换为你的后端接口路径
+    method: 'get',
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+ }
+
 
 // 搜索商品
 export function searchProductsByName(name) {
@@ -337,6 +352,39 @@ export async function deleteCertificateById(id) {
     throw error;
   }
 }
+
+
+// 新增横向轮播图商品 /v1/productsCarousels/addProductsCarousels
+export async function addProductsCarousel(carousel){
+   try {
+    const response = await request({
+      url: '/v1/productsCarousels/addProductsCarousels',
+      method: 'post',
+      data: carousel
+    });
+    return response;
+  } catch (error) {
+    console.error('Error adding carousel:', error);
+    throw error;
+  }
+}
+
+// 编辑横向轮播图商品 /v1/productsCarousels/updateProductsCarousels
+export async function updateProductsCarousel(carousel) { 
+  try {
+    const response = await request({
+      url: '/v1/productsCarousels/updateProductsCarousels',
+      method: 'put',
+      data: carousel
+    });
+    return response;
+  } catch (error) {
+    console.error('Error updating carousel:', error);
+    throw error;
+  }
+}
+
+
 
 
 // 获取gps坐标

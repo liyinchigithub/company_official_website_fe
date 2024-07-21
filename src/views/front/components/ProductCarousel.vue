@@ -15,7 +15,7 @@
   </template>
   
   <script>
-  import { getProductCarousel } from '@/api/index'; // 从 index.js 导入 getProducts 函数
+  import { getProductCarouselById } from '@/api/index'; // 从 index.js 导入 getProducts 函数
   
   export default {
     name: 'ProductCarousel',
@@ -26,7 +26,7 @@
     },
     async created() {
        // 获取横向商品列表
-        const response = await getProductCarousel();
+        const response = await getProductCarouselById(1);
         this.products = response.data; // 访问response.data
         },
     methods: {

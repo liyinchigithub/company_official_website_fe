@@ -21,13 +21,26 @@
         </el-form-item>
       </el-form>
       <div v-if="carouselItems.length">
-        <h3>已添加到轮播图的商品：</h3>
-        <ul>
-          <li v-for="item in carouselItems" :key="item.id">
-            {{ item.name }}
-          </li>
-        </ul>
-      </div>
+      <!-- <h3>已添加到轮播图的商品：</h3> -->
+      <el-table :data="carouselItems" style="width: 100%">
+        <el-table-column prop="name" label="商品名称" />
+        <el-table-column prop="coverImage" label="商品图片">
+          <template #default="scope">
+            <el-image
+              :src="scope.row.coverImage"
+              style="width: 50px; height: 50px;"
+              fit="cover"
+              alt="商品图片"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column label="操作">
+          <template #default="scope">
+            <el-button type="danger" @click="removeProductFromCarousel(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
       <!-- 新增的保存配置按钮 -->
       <div class="save-button">
         <el-button type="success" @click="saveCarouselConfig">保存配置</el-button>
@@ -37,7 +50,8 @@
 </template>
 
 <script>
-import { getAllProducts } from '@/api/index.js';
+import { getAllProducts,getAllCarousel, deleteCarousel, saveCarousel ,updateCarousel} from '@/api/index.js';
+  
 
 export default {
   name: 'CarouselConfig',
@@ -49,9 +63,6 @@ export default {
       products: [], // 商品数据
       carouselItems: [], // 轮播图中的商品
     };
-  },
-  mounted() {
-    this.fetchProducts();
   },
   methods: {
     async fetchProducts() {
@@ -80,12 +91,36 @@ export default {
         this.$message.error('请选择一个商品');
       }
     },
+    async removeProductFromCarousel(productId) {
+      try {
+        const response = await deleteCarouselItem(productId);
+        if (response.code === 0) {
+          this.carouselItems = this.carouselItems.filter(item => item.id !== productId);
+          this.$message.success('商品已从轮播图中删除');
+        } else {
+          this.$message.error('删除商品失败: ' + response.message);
+        }
+      } catch (error) {
+        console.error('删除商品失败:', error);
+        this.$message.error('删除商品失败');
+      }
+    },
     // 新增的保存配置方法
     saveCarouselConfig() {
       // 实现保存配置的逻辑
       console.log('保存轮播图配置:', this.carouselItems);
       this.$message.success('轮播图配置已保存');
+    },
+    // 新增的获取当前轮播图配置的方法
+    async fetchCarouselConfig() {
+      // 实现获取当前轮播图配置的逻辑
+      console.log('获取当前轮播图配置');
+      // 这里可以调用后端接口并更新 carouselItems
     }
+  },
+  mounted() {
+    this.fetchProducts();
+    this.fetchCarouselConfig(); // 获取当前轮播图配置
   },
 };
 </script>
