@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { getAllProducts, getAllProductsCarousel, deleteProductsCarousel, saveProductsCarousel, updateProductsCarousel } from '@/api/index.js';
+import { getAllProducts, getAllProductsCarousel,getProductCarouselById, deleteProductsCarousel, saveProductsCarousel, updateProductsCarousel } from '@/api/index.js';
 
 
 export default {
@@ -110,7 +110,17 @@ export default {
     async fetchCarouselConfig() {
       // 实现获取当前轮播图配置的逻辑
       console.log('获取当前轮播图配置');
-      // 这里可以调用后端接口并更新 carouselItems
+      try {
+        const response = await getProductCarouselById(1); // 假设ID为1
+        if (response.code === 0) {
+          this.carouselItems = response.data.products; // 假设返回的数据结构中有products
+        } else {
+          this.$message.error('获取轮播图配置失败: ' + response.message);
+        }
+      } catch (error) {
+        console.error('获取轮播图配置失败:', error);
+        this.$message.error('获取轮播图配置失败');
+      }
     }
   },
   mounted() {
