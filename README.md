@@ -15,7 +15,13 @@
 - vue
 	- 2.6 
 - elementUI
- 	- 
+
+![image](https://github.com/user-attachments/assets/1c08aa7d-c5c3-4882-80f0-5506cce2aa14)
+
+![image](https://github.com/user-attachments/assets/b02f7d3a-c9b3-49b3-834e-b16c93f439c8)
+
+![image](https://github.com/user-attachments/assets/b09f58e7-e8bc-4a6e-8351-0f308ed3082b)
+
 
 
 # 安装
