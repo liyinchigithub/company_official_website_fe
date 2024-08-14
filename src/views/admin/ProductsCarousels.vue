@@ -45,7 +45,7 @@ import { getAllProducts, getAllProductsCarousel,getProductCarouselById, deletePr
 
 
 export default {
-  name: 'CarouselConfig',
+  name: 'ProductsCarousels',
   data() {
     return {
       form: {
