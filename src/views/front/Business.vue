@@ -30,7 +30,7 @@
             </el-card>
             <el-card class="top">
                 <div class="form-container">
-                    <h2 class="join">加盟申请 </h2>
+                    <h2 class="join-title">加盟申请</h2>
                     <el-form :model="form" label-width="80px">
                         <el-form-item label="姓名">
                             <el-input v-model="form.name"></el-input>
@@ -153,5 +153,23 @@ export default {
     max-width: 600px; // 设置表单容器的最大宽度
     margin: 0 auto; // 将表单容器居中对齐
     padding: 20px;
+}
+
+.join-title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    position: relative;
+}
+
+.join-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 2px;
+    background: #409EFF; // 使用主题色
+    margin: 10px auto 0;
 }
 </style>
