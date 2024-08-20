@@ -46,6 +46,14 @@ const routes = [
         }
     },
     {
+        path: '/business',
+        name: 'Business',
+        component: () => import('@/views/front/Business.vue'),
+        meta: {
+            title: '招商'
+        }
+    },
+    {
         path: '/about',
         name: 'About',
         component: () => import('@/views/front/About.vue'),
