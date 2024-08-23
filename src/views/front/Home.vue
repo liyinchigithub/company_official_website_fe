@@ -11,35 +11,60 @@
         <h1 class="center">XXXXXXXXXXXXXXXXXXX</h1>
         <p class="center">一个XXXXXXXXXX、经典、文化的深度用户</p>
       </div>
-      <div class="">
+      <!-- <div class="">
         <div class="features">
           <div class="feature">
-            <img src="../../assets/images/icon.png" alt="古早味" class="feature-icon"/>
+            <img src="@/assets/images/icon.png" alt="古早味" class="feature-icon"/>
             <h3>古早味</h3>
             <p>古早味，是闽南地区特有的饮食文化，是闽南文化的重要组成部分，是闽南文化的象征之一。</p>
           </div>
           <div class="feature">
-            <img src="../../assets/images/icon.png" alt="闽南文化" class="feature-icon"/>
+            <img src="@/assets/images/icon.png" alt="闽南文化" class="feature-icon"/>
             <h3>闽南文化</h3>
             <p>闽南文化，是闽南地区特有的饮食文化，是闽南文化的重要组成部分，是闽南文化的象征之一。</p>
           </div>
           <div class="feature">
-            <img src="../../assets/images/icon.png" alt="多元宗教" class="feature-icon"/>
+            <img src="@/assets/images/icon.png" alt="多元宗教" class="feature-icon"/>
             <h3>多元宗教</h3>
             <p>多元宗教，是闽南地区特有的饮食文化，是闽南文化的重要组成部分，是闽南文化的象征之一。</p>
           </div>
           <div class="feature">
-            <img src="../../assets/images/icon.png" alt="多元文化" class="feature-icon"/>
+            <img src="@/assets/images/icon.png" alt="多元文化" class="feature-icon"/>
             <h3>多元文化</h3>
             <p>多元文化，是闽南地区特有的饮食文化，是闽南文化的重要组成部分，是闽南文化的象征之一。</p>
           </div>
         </div>
-      </div>
-      <el-card class="top">
-				<div class="left">
-					<img class="top5" style="width: 150px; height: 150px;border: 1px solid #e1e1e1" src="../../assets/images/weChat-1.jpg"/>
+      </div> -->
+      <!-- <el-card class="top">
+        <div class="left">
+          <img class="top5 full-image" src="@/assets/images/weChat-1.jpg"/>
         </div>
-			</el-card>
+      </el-card> -->
+      <!-- 为您提供更多资讯和服务 -->
+      <el-card class="top">
+        <div class="info-services">
+          <div class="service" @click="navigateTo('https://example.com/shop')">
+            <img src="@/assets/images/icon.png" alt="官方商城" class="service-icon"/>
+            <h3>官方商城</h3>
+            <p>总部直销 优惠畅享</p>
+          </div>
+          <div class="service" @click="navigateTo('https://example.com/kitchen')">
+            <img src="@/assets/images/icon.png" alt="厨房换新" class="service-icon"/>
+            <h3>厨房换新</h3>
+            <p>享受超值补贴</p>
+          </div>
+          <div class="service" @click="navigateTo('https://example.com/join')">
+            <img src="@/assets/images/icon.png" alt="招商加盟" class="service-icon"/>
+            <h3>招商加盟</h3>
+            <p>稀缺经销席位</p>
+          </div>
+          <div class="service" @click="navigateTo('https://example.com/support')">
+            <img src="@/assets/images/icon.png" alt="服务支持" class="service-icon"/>
+            <h3>服务支持</h3>
+            <p>热线400-887-9882</p>
+          </div>
+        </div>
+      </el-card>
       <!-- 新增的商品卡片轮播图组件 -->
       <!-- <ProductCarousel /> -->
     </div>
@@ -64,7 +89,11 @@ export default {
   },
   mounted() {},
   created() {},
-  methods: {},
+  methods: {
+    navigateTo(url) {
+      window.location.href = url;
+    }
+  },
 };
 </script>
 
@@ -150,5 +179,46 @@ export default {
       color: #666;
     }
   }
+}
+
+/* 新增样式 */
+.info-services {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 20px 0;
+
+  .service {
+    width: 200px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    .service-icon {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #666;
+    }
+  }
+}
+
+.full-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; // 保持图片的宽高比并裁剪以填充容器
 }
 </style>

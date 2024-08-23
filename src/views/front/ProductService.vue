@@ -11,8 +11,9 @@
 				<div class="left">
 					<!-- 产品横向逐一展示 -->
 					<div v-for="product in products" :key="product.id" class="product-card">
-						<img :src="product.image" alt="product.name" class="product-image"/>
-						<p>{{ product.name }}</p>
+						<img :src="product.coverImage" alt="暂无图片" class="product-image"/>
+						<p>品牌：{{ product.brand }}</p>
+						<p>名称：{{ product.name }}</p>
 						<el-button type="primary" @click="viewDetails(product.id)">查看详情</el-button>
 					</div>
 				</div>
@@ -26,7 +27,7 @@
 import Banner from './components/Banner'
 import Nav from './components/Nav.vue'
 import Footer from './components/Footer.vue'
-import { getProductCarousel } from '@/api/index.js'
+import { getAllProducts } from '@/api/index.js'
 
 export default {
     name: 'ProductService',
@@ -44,15 +45,14 @@ export default {
 
     methods: {
       fetchProducts() {
-         getProductCarouselById(1).then(response => {
+        getAllProducts().then(response => {
                 this.products = response.data; // 访问response.data
             }).catch(error => {
                 console.error('Failed to fetch products:', error);
             });
         },
         viewDetails(id) {
-            // Implement view details logic here
-            console.log('View details for product id:', id);
+          this.$router.push({ name: 'ProductDetail', params: { id } });
         }
     },
 };
