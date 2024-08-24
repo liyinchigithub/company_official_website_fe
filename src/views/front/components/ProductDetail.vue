@@ -6,7 +6,7 @@
       <div class="product-info">
         <h1>{{ product.name }}</h1>
         <p>{{ product.description }}</p>
-        <p>价格: {{ product.salePrice }}</p>
+        <!-- <p>价格: {{ product.salePrice }}</p> -->
       </div>
     </el-card>
     <Footer class="top"/>

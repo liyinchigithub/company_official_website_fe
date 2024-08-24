@@ -48,23 +48,39 @@
             <h3>官方商城</h3>
             <p>总部直销 优惠畅享</p>
           </div>
-          <div class="service" @click="navigateTo('https://example.com/kitchen')">
+          <!-- <div class="service" @click="navigateTo('https://example.com/kitchen')">
             <img src="@/assets/images/icon.png" alt="厨房换新" class="service-icon"/>
             <h3>厨房换新</h3>
             <p>享受超值补贴</p>
-          </div>
-          <div class="service" @click="navigateTo('https://example.com/join')">
+          </div> -->
+          <div class="service" @click="navigateTo('/Business')">
             <img src="@/assets/images/icon.png" alt="招商加盟" class="service-icon"/>
             <h3>招商加盟</h3>
             <p>稀缺经销席位</p>
           </div>
-          <div class="service" @click="navigateTo('https://example.com/support')">
-            <img src="@/assets/images/icon.png" alt="服务支持" class="service-icon"/>
-            <h3>服务支持</h3>
-            <p>热线400-887-9882</p>
+          <div class="service" @click="showHotline">
+          <img src="@/assets/images/icon.png" alt="服务支持" class="service-icon"/>
+          <h3>服务支持</h3>
+          <p>热线400-887-9882</p>
           </div>
+          <el-dialog :visible.sync="hotlineVisible" title="服务支持">
+          <div class="hotline-container">
+            <p class="hotline-text">热线电话: 400-887-9882</p>
+            <el-button type="primary" @click="copyToClipboard('400-887-9882')">复制</el-button>
+          </div>
+        </el-dialog>
         </div>
       </el-card>
+      <!-- 新增自动滚动模块 -->
+      <el-card class="top">
+      <div class="scrolling-container">
+      <div class="scrolling-content" v-for="certificate in certificates" :key="certificate.id">
+        <img :src="certificate.imageUrl" :alt="certificate.name" class="certificate-image"/>
+        <h3>{{ certificate.name }}</h3>
+        <p>{{ certificate.description }}</p>
+      </div>
+    </div>
+   </el-card>
       <!-- 新增的商品卡片轮播图组件 -->
       <!-- <ProductCarousel /> -->
     </div>
@@ -75,7 +91,7 @@
 <script>
 import Banner from './components/Banner'
 import ProductCarousel from './components/ProductCarousel' // 引入新组件
-
+import { getAllCertificates } from '@/api/index' // 引入API方法
 export default {
   name: 'Home',
   components: {
@@ -85,19 +101,54 @@ export default {
   props: {},
   watch: {},
   data() {
-    return {};
+    return {
+      hotlineVisible: false,// 服务支持弹窗
+      certificates: [] // 存储证书数据
+    };
   },
-  mounted() {},
+  mounted() {
+    this.fetchCertificates();
+  },
   created() {},
   methods: {
     navigateTo(url) {
       window.location.href = url;
-    }
+    },
+    showHotline() {
+      this.hotlineVisible = true;
+    },
+    copyToClipboard(text) {
+      const input = document.createElement('input');
+      input.value = text;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      this.$message.success('复制成功');
+    },
+    async fetchCertificates() {
+      try {
+        const response = await getAllCertificates();
+        this.certificates = response.data;
+      } catch (error) {
+        console.error('Failed to fetch certificates:', error);
+      }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.hotline-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hotline-text {
+  font-size: 18px; /* Increase font size */
+  user-select: text; /* Make text selectable */
+}
 .page {
   display: flex;
   flex-direction: column;
@@ -220,5 +271,36 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover; // 保持图片的宽高比并裁剪以填充容器
+}
+
+.scrolling-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  position: relative;
+}
+
+.scrolling-content {
+  display: inline-block;
+  animation: scroll 20s linear infinite;
+  text-align: center;
+  margin: 0 10px;
+}
+
+.certificate-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 </style>

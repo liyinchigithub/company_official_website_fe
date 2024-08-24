@@ -353,6 +353,20 @@ export async function deleteCertificateById(id) {
   }
 }
 
+// 获取所有证书
+export function getAllCertificates() {
+  return request({
+    url: '/v1/certificates/getAllCertificates',
+    method: 'get',
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
 
 // 新增横向轮播图商品 /v1/productsCarousels/addProductsCarousels
 export async function addProductsCarousel(carousel){
