@@ -7,6 +7,8 @@
 
 [后端项目地址](https://github.com/liyinchigithub/company_official_website_server)
 
+[预览](http://81.71.17.188:9000/#/home)
+
 ## 技术栈
 
 - nodejs v14.21.3、v12.22.12
