@@ -14,6 +14,79 @@ export function getSwiperList() {
   });
 }
 
+// 新增轮播图
+export function addCarousel(data) {
+  return request({
+    url: '/v1/carousels/addCarousel', // 替换为你的后端接口路径
+    method: 'post',
+    data
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
+// 编辑轮播图
+export function editCarousel(data) {
+  return request({
+    url: '/v1/carousels/editCarousel', // 替换为你的后端接口路径
+    method: 'put',
+    data
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+  
+}
+
+// 搜索轮播图
+export function searchCarouselByName(name) {
+  return request({
+    url: `/v1/carousels/searchCarouselByName/${name}`, // 替换为你的后端接口路径
+    method: 'get',
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
+// 删除轮播图
+export function deleteCarousel(id) {
+  return request({
+    url: `/v1/carousels/deleteCarousel/${id}`, // 替换为你的后端接口路径
+    method: 'delete',
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
+// 分页获取轮播图
+export function getCarouselByPage(page, size) {
+  return request({
+    url: `/v1/carousels/getCarouselsByPage/${page}/${size}`, // 替换为你的后端接口路径
+    method: 'get',
+  }).then(response => {
+    console.log('API request successful:', response); // 打印API请求成功的响应
+    return response; // 返回整个response对象
+  }).catch(error => {
+    console.error('API request failed:', error); // 打印API请求失败的错误
+    throw error;
+  });
+}
+
 // 获取横向商品
 export function getAllProductCarousel(){
   return request({

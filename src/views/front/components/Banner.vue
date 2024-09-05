@@ -1,11 +1,12 @@
 <template>
-	<div>
-		<el-carousel :interval="5000" arrow="always" height="500px">
-			<el-carousel-item v-for="(item, i) in swiperList" :key="i">
-				<el-image :src="encodeUrl(item.imageUrl)" alt="" style="width:100%;height:100%" fit="cover" @error="handleImageError"/>
-			</el-carousel-item>
-		</el-carousel>
-	</div>
+    <div>
+        <el-carousel :interval="5000" arrow="always" height="500px">
+            <el-carousel-item v-for="(item, i) in swiperList" :key="i">
+                <el-image :src="encodeUrl(item.imageUrl)" alt="" style="width:100%;height:100%" fit="cover"
+                    @error="handleImageError" />
+            </el-carousel-item>
+        </el-carousel>
+    </div>
 </template>
 
 <script>
@@ -29,14 +30,15 @@ export default {
 
     methods: {
         async fetchSwiperList() {
-            console.log('fetchSwiperList called'); // 确认方法被调用
+            console.log('fetchSwiperList called');
             try {
-                console.log('Before API call'); // 在API调用之前打印日志
+                console.log('Before API call');
                 const response = await getSwiperList();
-                console.log('API response:', response); // 打印API响应
+                console.log('API response:', response);
                 if (response && response.data) {
-                    this.swiperList = response.data.filter(item => item.enabled); // 过滤掉enabled为false的轮播图
-                    console.log('Filtered swiperList:', this.swiperList); // 打印过滤后的数据
+                    // 修改这里：只过滤掉deleted为true的轮播图
+                    this.swiperList = response.data.filter(item => !item.deleted);
+                    console.log('Filtered swiperList:', this.swiperList);
                 } else {
                     console.error('API response does not contain data');
                 }
@@ -62,8 +64,8 @@ export default {
 
 <style lang="scss" scoped>
 @media (max-width: 768px) {
-  .el-carousel {
-    height: 300px;
-  }
+    .el-carousel {
+        height: 300px;
+    }
 }
 </style>

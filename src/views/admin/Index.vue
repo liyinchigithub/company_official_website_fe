@@ -18,6 +18,14 @@
 								</div>
 							</template>
 						</el-menu-item>
+						<el-menu-item index="/Carousel">
+							<template slot="title">
+								<div class="flex-start">
+									<!-- <div class="dot"></div> -->
+									<div slot="title">轮播图</div>
+								</div>
+							</template>
+						</el-menu-item>
 						<el-menu-item index="/BrandAuthorizationCertificate">
 							<template slot="title">
 								<div class="flex-start">
@@ -42,14 +50,13 @@
 								</div>
 							</template>
 						</el-menu-item>
-						<el-menu-item index="/Carousel">
+						<!-- <el-menu-item index="/Carousel">
 							<template slot="title">
 								<div class="flex-start">
-									<!-- <div class="dot"></div> -->
 									<div slot="title">轮播图</div>
 								</div>
 							</template>
-						</el-menu-item>
+						</el-menu-item> -->
 						<el-menu-item index="/ProductsCarousels">
 							<template slot="title">
 								<div class="flex-start">

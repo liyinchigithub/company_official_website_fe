@@ -1,127 +1,292 @@
 <template>
   <div>
     <el-card class="card">
-      <div class="title">【轮播图配置】</div>
+      <div class="title">【轮播图管理】</div>
       <div class="center">
-        <!-- <img src="@/assets/avatar.png" width="100px" height="100px" alt=""> -->
-      </div>
-      <el-form :model="form" @submit.native.prevent="addProductToCarousel">
-        <el-form-item label="选择商品">
-          <el-select v-model="form.selectedProduct" placeholder="请选择商品">
-            <el-option
-              v-for="item in products"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="addProductToCarousel">添加到轮播图</el-button>
-        </el-form-item>
-      </el-form>
-      <div v-if="carouselItems.length">
-      <!-- <h3>已添加到轮播图的商品：</h3> -->
-      <el-table :data="carouselItems" style="width: 100%">
-        <el-table-column prop="name" label="商品名称" />
-        <el-table-column prop="coverImage" label="商品图片">
-          <template #default="scope">
-            <el-image
-              :src="scope.row.coverImage"
-              style="width: 50px; height: 50px;"
-              fit="cover"
-              alt="商品图片"
-            />
-          </template>
-        </el-table-column>
-        <el-table-column label="操作">
-          <template #default="scope">
-            <el-button type="danger" @click="removeProductFromCarousel(scope.row.id)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-      <!-- 新增的保存配置按钮 -->
-      <div class="save-button">
-        <el-button type="success" @click="saveCarouselConfig">保存配置</el-button>
+        <!-- 搜索栏 -->
+        <div class="search-bar">
+          <el-input v-model="searchQuery" placeholder="请输入轮播图标题" class="search-input"></el-input>
+          <el-button type="primary" @click="searchCarousels" class="search-button">搜索</el-button>
+          <el-button type="success" @click="showAddCarouselDialog" class="search-button">新增轮播图</el-button>
+        </div>
+        
+        <!-- 轮播图列表 -->
+        <el-table :data="carousels" style="width: 100%" stripe>
+          <el-table-column prop="title" label="标题" sortable></el-table-column>
+          <el-table-column label="图片">
+            <template slot-scope="scope">
+              <el-image
+                style="width: 100px; height: 50px"
+                :src="scope.row.imageUrl"
+                fit="cover"
+                @click="showImageDialog(scope.row.imageUrl)"
+                :preview-src-list="[scope.row.imageUrl]"
+              ></el-image>
+            </template>
+          </el-table-column>
+          <el-table-column prop="order" label="排序" sortable></el-table-column>
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini" @click="editCarousel(scope.row)">编辑</el-button>
+              <el-button size="mini" type="danger" @click="confirmDeleteCarousel(scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <!-- 分页 -->
+        <el-pagination
+          @current-change="handlePageChange"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          layout="total, prev, pager, next"
+          :total="totalCarousels">
+        </el-pagination>
       </div>
     </el-card>
+
+    <!-- 新增轮播图弹窗 -->
+    <el-dialog title="新增轮播图" :visible.sync="addCarouselDialogVisible">
+      <el-form :model="newCarousel" :rules="rules" ref="newCarouselForm" label-position="top">
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="newCarousel.title"></el-input>
+        </el-form-item>
+        <el-form-item label="图片" prop="imageUrl">
+          <el-input v-model="newCarousel.imageUrl"></el-input>
+          <el-upload
+            ref="uploadImage"
+            class="upload-demo"
+            :action="uploadUrl"
+            :before-upload="beforeUploadImage"
+            :on-success="handleImageUploadSuccess"
+            :show-file-list="false">
+            <el-button size="small" type="primary">上传图片</el-button>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="排序" prop="order">
+          <el-input-number v-model="newCarousel.order" :min="1"></el-input-number>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="addCarouselDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitForm('newCarouselForm')">确定</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 编辑轮播图弹窗 -->
+    <el-dialog title="编辑轮播图" :visible.sync="editCarouselDialogVisible">
+      <el-form :model="currentCarousel" :rules="rules" ref="editCarouselForm" label-position="top">
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="currentCarousel.title"></el-input>
+        </el-form-item>
+        <el-form-item label="图片" prop="imageUrl">
+          <el-input v-model="currentCarousel.imageUrl"></el-input>
+          <el-upload
+            ref="uploadImage"
+            class="upload-demo"
+            :action="uploadUrl"
+            :before-upload="beforeUploadImage"
+            :on-success="handleImageUploadSuccess"
+            :show-file-list="false">
+            <el-button size="small" type="primary">上传图片</el-button>
+          </el-upload>
+        </el-form-item>
+        <el-form-item label="排序" prop="order">
+          <el-input-number v-model="currentCarousel.order" :min="1"></el-input-number>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editCarouselDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitEditForm('editCarouselForm')">确定</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 删除确认弹窗 -->
+    <el-dialog title="确认删除" :visible.sync="deleteCarouselDialogVisible">
+      <span>你确定要删除这个轮播图吗？</span>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="deleteCarouselDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="deleteCarousel">确定</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 图片预览弹窗 -->
+    <el-dialog :visible.sync="imageDialogVisible" width="30%">
+      <img :src="currentImage" style="width: 100%;" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getAllProducts,getAllCarousel, deleteCarousel, saveCarousel ,updateCarousel} from '@/api/index.js';
-  
+import { getSwiperList, addCarousel, deleteCarouselById, updateCarousel, uploadFile } from '@/api/index.js';
+import { baseUrl } from '@/config/index';
 
 export default {
-  name: 'CarouselConfig',
+  name: 'Carousel',
   data() {
     return {
-      form: {
-        selectedProduct: null,
+      searchQuery: '',
+      carousels: [],
+      currentPage: 1,
+      pageSize: 10,
+      totalCarousels: 0,
+      addCarouselDialogVisible: false,
+      editCarouselDialogVisible: false,
+      deleteCarouselDialogVisible: false,
+      newCarousel: {
+        imageUrl: '',
+        redirectUrl: '',
+        isEnabled: true,
+        order: 1
       },
-      products: [], // 商品数据
-      carouselItems: [], // 轮播图中的商品
+      currentCarousel: {},
+      carouselToDelete: null,
+      rules: {
+        title: [{ required: true, message: '请输入轮播图标题', trigger: 'blur' }],
+        imageUrl: [{ required: true, message: '请上传轮播图图片', trigger: 'blur' }],
+        order: [{ required: true, message: '请输入排序', trigger: 'blur' }]
+      },
+      uploadUrl: '/api/v1/fileUpload/upload',
+      imageDialogVisible: false,
+      currentImage: ''
     };
   },
-  methods: {
-    async fetchProducts() {
-      try {
-        const response = await getAllProducts();
-        if (response.code === 0) {
-          this.products = response.data;
-        } else {
-          this.$message.error('获取商品数据失败: ' + response.message);
-        }
-      } catch (error) {
-        console.error('获取商品数据失败:', error);
-        this.$message.error('获取商品数据失败');
-      }
-    },
-    addProductToCarousel() {
-      if (this.form.selectedProduct) {
-        const selectedProduct = this.products.find(product => product.id === this.form.selectedProduct);
-        if (selectedProduct && !this.carouselItems.some(item => item.id === selectedProduct.id)) {
-          this.carouselItems.push(selectedProduct);
-          console.log('添加商品ID:', this.form.selectedProduct);
-        } else {
-          this.$message.error('该商品已在轮播图中');
-        }
-      } else {
-        this.$message.error('请选择一个商品');
-      }
-    },
-    async removeProductFromCarousel(productId) {
-      try {
-        const response = await deleteCarouselItem(productId);
-        if (response.code === 0) {
-          this.carouselItems = this.carouselItems.filter(item => item.id !== productId);
-          this.$message.success('商品已从轮播图中删除');
-        } else {
-          this.$message.error('删除商品失败: ' + response.message);
-        }
-      } catch (error) {
-        console.error('删除商品失败:', error);
-        this.$message.error('删除商品失败');
-      }
-    },
-    // 新增的保存配置方法
-    saveCarouselConfig() {
-      // 实现保存配置的逻辑
-      console.log('保存轮播图配置:', this.carouselItems);
-      this.$message.success('轮播图配置已保存');
-    },
-    // 新增的获取当前轮播图配置的方法
-    async fetchCarouselConfig() {
-      // 实现获取当前轮播图配置的逻辑
-      console.log('获取当前轮播图配置');
-      // 这里可以调用后端接口并更新 carouselItems
-    }
-  },
   mounted() {
-    this.fetchProducts();
-    this.fetchCarouselConfig(); // 获取当前轮播图配置
+    this.fetchCarousels();
   },
+  methods: {
+    async fetchCarousels() {
+      try {
+        const response = await getSwiperList();
+        if (response.code === 0) {
+          this.carousels = response.data;
+          this.totalCarousels = response.data.length;
+        } else {
+          this.$message.error('获取轮播图列表失败: ' + response.message);
+        }
+      } catch (error) {
+        this.$message.error('获取轮播图列表失败: ' + error.message);
+      }
+    },
+    searchCarousels() {
+      // 由于没有专门的搜索接口，我们在前端进行过滤
+      this.carousels = this.carousels.filter(carousel => 
+        carousel.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
+    handlePageChange(page) {
+      this.currentPage = page;
+      // 由于没有分页接口，这里暂时不做处理
+    },
+    showAddCarouselDialog() {
+      this.addCarouselDialogVisible = true;
+    },
+    async addCarousel() {
+      try {
+        const response = await addCarousel(this.newCarousel);
+        if (response.code === 0) {
+          this.$message.success('新增轮播图成功');
+          this.addCarouselDialogVisible = false;
+          this.fetchCarousels();
+        } else {
+          this.$message.error('新增轮播图失败: ' + response.message);
+        }
+      } catch (error) {
+        this.$message.error('新增轮播图失败: ' + error.message);
+      }
+    },
+    editCarousel(carousel) {
+      this.currentCarousel = { ...carousel };
+      this.editCarouselDialogVisible = true;
+    },
+    async submitEditForm(formName) {
+      this.$refs[formName].validate(async (valid) => {
+        if (valid) {
+          try {
+            const response = await updateCarousel(this.currentCarousel);
+            if (response.code === 0) {
+              this.$message.success('编辑轮播图成功');
+              this.editCarouselDialogVisible = false;
+              this.fetchCarousels();
+            } else {
+              this.$message.error('编辑轮播图失败: ' + response.message);
+            }
+          } catch (error) {
+            this.$message.error('编辑轮播图失败: ' + error.message);
+          }
+        } else {
+          this.$message.error('请填写完整的轮播图信息');
+        }
+      });
+    },
+    confirmDeleteCarousel(carousel) {
+      this.carouselToDelete = carousel;
+      this.deleteCarouselDialogVisible = true;
+    },
+    async deleteCarousel() {
+      try {
+        const response = await deleteCarouselById(this.carouselToDelete.id);
+        if (response.code === 0) {
+          this.$message.success('删除轮播图成功');
+          this.deleteCarouselDialogVisible = false;
+          this.fetchCarousels();
+        } else {
+          this.$message.error('删除轮播图失败: ' + response.message);
+        }
+      } catch (error) {
+        this.$message.error('删除轮播图失败: ' + error.message);
+      }
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.addCarousel();
+        } else {
+          this.$message.error('请填写完整的轮播图信息');
+        }
+      });
+    },
+    handleImageUploadSuccess(response) {
+      if (response.code === 0) {
+        const imageUrl = `${baseUrl}/v1/getLatestImage?fileName=${response.data}`;
+        if (this.addCarouselDialogVisible) {
+          this.newCarousel.imageUrl = imageUrl;
+        } else if (this.editCarouselDialogVisible) {
+          this.currentCarousel.imageUrl = imageUrl;
+        }
+        this.$message.success('图片上传成功');
+      } else {
+        if (response.code === 401) {
+          this.$message.error('登录超时，请重新登录');
+        } else {
+          this.$message.error('图片上传失败: ' + response.message);
+        }
+      }
+    },
+    beforeUploadImage(file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('userId', window.localStorage.getItem('SET_NAME'));
+      formData.append('type', 'carousel');
+      this.uploadFile(formData);
+      return false;
+    },
+    async uploadFile(formData) {
+      try {
+        const response = await uploadFile(formData);
+        this.handleImageUploadSuccess(response);
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          this.$message.error('登录超时，请重新登录');
+        } else {
+          this.$message.error('图片上传失败: ' + error.message);
+        }
+      }
+    },
+    showImageDialog(imageUrl) {
+      this.currentImage = imageUrl;
+      this.imageDialogVisible = true;
+    }
+  }
 };
 </script>
 
@@ -131,7 +296,6 @@ export default {
 
   .title {
     width: 200px;
-    // background: linear-gradient(to right, #1E6BDC, #FFFEFF);
   }
 
   @media (max-width: 768px) {
@@ -147,8 +311,19 @@ export default {
   }
 }
 
-.save-button {
-  margin-top: 20px;
-  text-align: center;
+.search-bar {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.search-input {
+  margin-right: 10px;
+  width: 400px;
+}
+
+.search-button {
+  margin-right: 5px;
 }
 </style>
