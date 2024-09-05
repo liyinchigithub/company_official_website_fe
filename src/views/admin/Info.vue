@@ -56,6 +56,7 @@ export default {
     data() {
         return {
             footerData: {
+                id:1,
                 phone: '',
                 email: '',
                 address: '',
@@ -138,36 +139,36 @@ export default {
             }
         },
         handleLogoUploadSuccess(response) {
-      if (response.code === 0) {
-        this.footerData.beianImage = `${baseUrl}/v1/getLatestImage?fileName=${response.data}`;
-        this.$message.success('Logo上传成功');
-      } else {
-        if (response.code === 401) {
-          this.$message.error('登录超时，请重新登录');
-        } else {
-          this.$message.error('Logo上传失败: ' + response.message);
+            if (response.code === 0) {
+                this.footerData.beianImage = `${baseUrl}/v1/getLatestImage?fileName=${response.data}`;
+                this.$message.success('Logo上传成功');
+            } else {
+                if (response.code === 401) {
+                    this.$message.error('登录超时，请重新登录');
+                } else {
+                    this.$message.error('Logo上传失败: ' + response.message);
+                }
+            }
+        },
+        beforeLogoUpload(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('userId', localStorage.getItem('SET_NAME'));
+            this.uploadLogo(formData);
+            return false;
+        },
+        async uploadLogo(formData) {
+            try {
+                const response = await service.post(this.uploadUrl, formData);
+                this.handleLogoUploadSuccess(response);
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    this.$message.error('登录超时，请重新登录');
+                } else {
+                    this.$message.error('Logo上传失败: ' + error.message);
+                }
+            }
         }
-      }
-    },
-    beforeLogoUpload(file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('userId', localStorage.getItem('SET_NAME'));
-      this.uploadLogo(formData);
-      return false;
-    },
-    async uploadLogo(formData) {
-      try {
-        const response = await service.post(this.uploadUrl, formData);
-        this.handleLogoUploadSuccess(response);
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          this.$message.error('登录超时，请重新登录');
-        } else {
-          this.$message.error('Logo上传失败: ' + error.message);
-        }
-      }
-    }
     }
 };
 </script>
