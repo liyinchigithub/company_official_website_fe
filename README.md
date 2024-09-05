@@ -100,13 +100,15 @@ yarn build
 
 >src/views/admin/Index.vue
 
-## **请求地址**修改
+# 部署发布
 
->src/api/index.js
+## 修改**请求后端地址**
 
-## **允许跨域**修改
+>src/config/index.js
 
-### 前端配置跨域
+## 修改**允许跨域**
+
+### 前端跨域
 
 >vue.config.js
 
