@@ -1,47 +1,49 @@
 <template>
-	<div>
-		<el-card class="card">
-			<div class="title">【基础信息配置】</div>
-			<div class="center">
-				<!-- <img src="@/assets/avatar.png" width="100px" height="100px" alt=""> -->
-			</div>
-			<el-form :model="footerData" label-width="120px" class="input-width">
-				<el-form-item label="电话">
-					<el-input v-model="footerData.phone"></el-input>
-				</el-form-item>
-				<el-form-item label="邮箱">
-					<el-input v-model="footerData.email"></el-input>
-				</el-form-item>
-				<el-form-item label="地址">
-					<el-input v-model="footerData.address"></el-input>
-				</el-form-item>
-				<el-form-item label="微信图片">
-					<el-input v-model="footerData.weChatImage"></el-input>
-					<el-upload
-						ref="upload"
-						class="upload-demo"
-						:action="uploadUrl"
-						:before-upload="beforeUpload"
-						:on-success="handleUploadSuccess"
-						:show-file-list="false">
-						<el-button size="small" type="primary">上传图片</el-button>
-					</el-upload>
-				</el-form-item>
-				<el-form-item label="ICP">
-					<el-input v-model="footerData.icp"></el-input>
-				</el-form-item>
-				<el-form-item label="公安信息">
-					<el-input v-model="footerData.publicSecurity"></el-input>
-				</el-form-item>
-				<el-form-item label="版权">
-					<el-input v-model="footerData.copyright"></el-input>
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" @click="saveFooterData">保存</el-button>
-				</el-form-item>
-			</el-form>
-		</el-card>
-	</div>
+    <div>
+        <el-card class="card">
+            <div class="title">【基础信息配置】</div>
+            <div class="center">
+                <!-- <img src="@/assets/avatar.png" width="100px" height="100px" alt=""> -->
+            </div>
+            <el-form :model="footerData" label-width="120px" class="input-width">
+                <el-form-item label="电话">
+                    <el-input v-model="footerData.phone"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱">
+                    <el-input v-model="footerData.email"></el-input>
+                </el-form-item>
+                <el-form-item label="地址">
+                    <el-input v-model="footerData.address"></el-input>
+                </el-form-item>
+                <el-form-item label="网站logo">
+                    <el-input v-model="footerData.beianImage"></el-input>
+                    <el-upload ref="logoUpload" class="upload-demo" :action="uploadUrl" :before-upload="beforeLogoUpload"
+                        :on-success="handleLogoUploadSuccess" :show-file-list="false">
+                        <el-button size="small" type="primary">上传logo</el-button>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="微信客服二维码">
+                    <el-input v-model="footerData.weChatImage"></el-input>
+                    <el-upload ref="upload" class="upload-demo" :action="uploadUrl" :before-upload="beforeUpload"
+                        :on-success="handleUploadSuccess" :show-file-list="false">
+                        <el-button size="small" type="primary">上传图片</el-button>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="ICP">
+                    <el-input v-model="footerData.icp"></el-input>
+                </el-form-item>
+                <el-form-item label="公安信息">
+                    <el-input v-model="footerData.publicSecurity"></el-input>
+                </el-form-item>
+                <el-form-item label="版权">
+                    <el-input v-model="footerData.copyright"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="saveFooterData">保存</el-button>
+                </el-form-item>
+            </el-form>
+        </el-card>
+    </div>
 </template>
 
 <script>
@@ -58,6 +60,7 @@ export default {
                 email: '',
                 address: '',
                 weChatImage: '',
+                beianImage: '',
                 icp: '',
                 publicSecurity: '',
                 copyright: ''
@@ -106,7 +109,7 @@ export default {
                 // 判断是否是登录超时
                 if (response.code === 401) {
                     this.$message.error('登录超时，请重新登录');
-                }else{
+                } else {
                     this.$message.error('图片上传失败: ' + response.message);
                 }
             }
@@ -129,35 +132,66 @@ export default {
                 // 判断是否是登录超时
                 if (response.code === 401) {
                     this.$message.error('登录超时，请重新登录');
-                }else{
+                } else {
                     this.$message.error('图片上传失败: ' + response.message);
                 }
             }
+        },
+        handleLogoUploadSuccess(response) {
+      if (response.code === 0) {
+        this.footerData.beianImage = `${baseUrl}/v1/getLatestImage?fileName=${response.data}`;
+        this.$message.success('Logo上传成功');
+      } else {
+        if (response.code === 401) {
+          this.$message.error('登录超时，请重新登录');
+        } else {
+          this.$message.error('Logo上传失败: ' + response.message);
         }
+      }
+    },
+    beforeLogoUpload(file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('userId', localStorage.getItem('SET_NAME'));
+      this.uploadLogo(formData);
+      return false;
+    },
+    async uploadLogo(formData) {
+      try {
+        const response = await service.post(this.uploadUrl, formData);
+        this.handleLogoUploadSuccess(response);
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          this.$message.error('登录超时，请重新登录');
+        } else {
+          this.$message.error('Logo上传失败: ' + error.message);
+        }
+      }
+    }
     }
 };
 </script>
 
 <style lang="scss" scoped>
 .card {
-  min-height: 500px;
+    min-height: 500px;
 
-  .title {
-    width: 200px;
-    // background: linear-gradient(to right, #1E6BDC, #FFFEFF);
-  }
-
-  @media (max-width: 768px) {
     .title {
-      width: 80px;
+        width: 200px;
+        // background: linear-gradient(to right, #1E6BDC, #FFFEFF);
     }
-  }
 
-  @media (max-width: 480px) {
-    .title {
-      width: 60px;
+    @media (max-width: 768px) {
+        .title {
+            width: 80px;
+        }
     }
-  }
+
+    @media (max-width: 480px) {
+        .title {
+            width: 60px;
+        }
+    }
 }
 
 .input-width {
