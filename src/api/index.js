@@ -30,9 +30,9 @@ export function addCarousel(data) {
 }
 
 // 编辑轮播图
-export function editCarousel(data) {
+export function updateCarousel(data) {
   return request({
-    url: '/v1/carousels/editCarousel', // 替换为你的后端接口路径
+    url: '/v1/carousels/updateCarousel', // 替换为你的后端接口路径
     method: 'put',
     data
   }).then(response => {
@@ -60,7 +60,7 @@ export function searchCarouselByName(name) {
 }
 
 // 删除轮播图
-export function deleteCarousel(id) {
+export function deleteCarouselById(id) {
   return request({
     url: `/v1/carousels/deleteCarousel/${id}`, // 替换为你的后端接口路径
     method: 'delete',
