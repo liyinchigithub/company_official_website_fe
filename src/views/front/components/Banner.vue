@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-carousel :interval="5000" arrow="always" height="500px">
+        <el-carousel :interval="5000" arrow="always" :height="carouselHeight">
             <el-carousel-item v-for="(item, i) in swiperList" :key="i">
                 <el-image :src="encodeUrl(item.imageUrl)" alt="" style="width:100%;height:100%" fit="cover"
                     @error="handleImageError" />
@@ -19,15 +19,19 @@ export default {
     watch: {},
     data() {
         return {
-            swiperList: [], // 初始化为空数组
+            swiperList: [],
+            carouselHeight: '500px', // 默认高度
         };
     },
 
     mounted() {
         console.log('Component mounted'); // 确认组件挂载
         this.fetchSwiperList(); // 组件挂载后获取数据
+        window.addEventListener('resize', this.setCarouselHeight);
     },
-
+    beforeDestroy() {
+        window.removeEventListener('resize', this.setCarouselHeight);
+    },
     methods: {
         async fetchSwiperList() {
             console.log('fetchSwiperList called');
@@ -57,7 +61,14 @@ export default {
         handleImageError(event) {
             console.error('图片加载失败:', event.target.src);
             event.target.src = require('@/assets/banner/default.jpg'); // 替换为默认图片路径
-        }
+        },
+        setCarouselHeight() {
+            if (window.innerWidth <= 768) {
+                this.carouselHeight = '200px'; // 将移动端高度调整为200px
+            } else {
+                this.carouselHeight = '500px';
+            }
+        },
     },
 };
 </script>
@@ -68,9 +79,29 @@ export default {
   overflow: hidden;
 }
 
+.el-carousel {
+  width: 100%;
+}
+
+.el-carousel__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.el-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 @media (max-width: 768px) {
   .el-carousel {
-    height: 300px;
+    height: 200px;
+  }
+  
+  .el-image {
+    object-position: center; // 确保图片居中显示
   }
 }
 </style>

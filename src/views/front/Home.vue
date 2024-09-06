@@ -169,9 +169,11 @@ export default {
   flex-direction: column;
   min-height: 100vh; // Ensure the page takes at least the full height of the viewport
   padding: 20px;
+  margin-top: 75px; // 添加这一行
 
   @media (max-width: 768px) {
     padding: 10px;
+    margin-top: 60px; // 在移动设备上调整这个值
   }
 
   @media (max-width: 480px) {

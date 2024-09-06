@@ -16,6 +16,9 @@
   overflow-x: hidden;
   max-width: 100%;
 }
+body {
+  padding-top: 75px; // 根据您的导航栏高度调整这个值
+}
 
 @media screen and (max-width: 768px) {
   #app {

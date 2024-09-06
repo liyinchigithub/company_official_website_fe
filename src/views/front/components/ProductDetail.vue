@@ -9,6 +9,12 @@
         <!-- <p>价格: {{ product.salePrice }}</p> -->
       </div>
     </el-card>
+    <el-alert
+      v-if="error"
+      :title="error"
+      type="error"
+      :closable="false"
+    />
     <Footer class="top"/>
   </div>
 </template>
@@ -30,9 +36,14 @@ export default {
     Footer
   },
   async created() {
-    const productId = this.$route.params.id;
-    const response = await getProductById(productId);
-    this.product = response.data; // 访问response.data.data来获取产品信息
+    try {
+      const productId = this.$route.params.id;
+      const response = await getProductById(productId);
+      this.product = response.data;
+    } catch (error) {
+      console.error('获取产品详情失败:', error);
+      this.error = '获取产品详情失败，请稍后再试';
+    }
   }
 };
 </script>

@@ -6,6 +6,12 @@
                 <!-- <img src="@/assets/avatar.png" width="100px" height="100px" alt=""> -->
             </div>
             <el-form :model="footerData" label-width="120px" class="input-width">
+                <el-form-item label="首页标题">
+                    <el-input v-model="footerData.homeTitle"></el-input>
+                </el-form-item>
+                <el-form-item label="首页描述">
+                    <el-input v-model="footerData.homeDescription" type="textarea" :rows="3"></el-input>
+                </el-form-item>
                 <el-form-item label="电话">
                     <el-input v-model="footerData.phone"></el-input>
                 </el-form-item>
@@ -56,7 +62,7 @@ export default {
     data() {
         return {
             footerData: {
-                id:1,
+                id: 1,
                 phone: '',
                 email: '',
                 address: '',
@@ -64,7 +70,9 @@ export default {
                 beianImage: '',
                 icp: '',
                 publicSecurity: '',
-                copyright: ''
+                copyright: '' ,
+                homeTitle: '', // 新增字段
+                homeDescription: '' // 新增字段
             },
             uploadUrl: '/v1/fileUpload/upload' // 修改为相对路径
         };
@@ -175,50 +183,50 @@ export default {
 
 <style lang="scss" scoped>
 .info-container {
-  padding: 20px;
+    padding: 20px;
 }
 
 .card {
-  min-height: 500px;
+    min-height: 500px;
 }
 
 .title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .center {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 @media (max-width: 768px) {
-  .info-container {
-    padding: 10px;
-  }
+    .info-container {
+        padding: 10px;
+    }
 
-  .el-form-item {
-    margin-bottom: 15px;
-  }
+    .el-form-item {
+        margin-bottom: 15px;
+    }
 
-  .el-form-item__label {
-    float: none;
-    display: block;
-    text-align: left;
-    padding: 0 0 10px;
-  }
+    .el-form-item__label {
+        float: none;
+        display: block;
+        text-align: left;
+        padding: 0 0 10px;
+    }
 
-  .el-form-item__content {
-    margin-left: 0 !important;
-  }
+    .el-form-item__content {
+        margin-left: 0 !important;
+    }
 
-  .el-input {
-    width: 100%;
-  }
+    .el-input {
+        width: 100%;
+    }
 
-  .el-button {
-    width: 100%;
-  }
+    .el-button {
+        width: 100%;
+    }
 }
 </style>
