@@ -145,7 +145,7 @@ export function getProductById(id) {
   });
 }
 
-// 获取Footer数据
+// 获取基础信息数据
 export function getFooterData() {
   return request({
     url: '/v1/basicInformation/getAllBasicInformation', // 使用代理路径

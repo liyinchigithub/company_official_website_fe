@@ -8,8 +8,8 @@
         <el-breadcrumb-item>当前</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="introduce">
-        <h1 class="center">XXXXXXXXXXXXXXXXXXX</h1>
-        <p class="center">一个XXXXXXXXXX、经典、文化的深度用户</p>
+        <h1 class="center">{{ homeTitle }}</h1>
+        <p class="center">{{ homeDescription }}</p>
       </div>
       <!-- <div class="">
         <div class="features">
@@ -91,7 +91,7 @@
 <script>
 import Banner from './components/Banner'
 import ProductCarousel from './components/ProductCarousel' // 引入新组件
-import { getAllCertificates } from '@/api/index' // 引入API方法
+import { getAllCertificates,getFooterData } from '@/api/index' // 引入API方法
 export default {
   name: 'Home',
   components: {
@@ -102,11 +102,14 @@ export default {
   watch: {},
   data() {
     return {
+      homeTitle: '',
+      homeDescription: '',
       hotlineVisible: false,// 服务支持弹窗
       certificates: [] // 存储证书数据
     };
   },
   mounted() {
+    this.fetchHomeData();
     this.fetchCertificates();
   },
   created() {},
@@ -132,6 +135,18 @@ export default {
         this.certificates = response.data;
       } catch (error) {
         console.error('Failed to fetch certificates:', error);
+      }
+    },
+    async fetchHomeData() {
+      try {
+        const response = await getFooterData();
+        // console.log("response", response);
+        if (response && response.data) {
+          this.homeTitle = response.data[0].homeTitle || 'XXXXXXXXXXXXXXXX';
+          this.homeDescription = response.data[0].homeDescription || '一个XXXXXXXXXX、经典、文化的深度用户';
+        }
+      } catch (error) {
+        console.error('获取首页数据失败:', error);
       }
     },
   },
