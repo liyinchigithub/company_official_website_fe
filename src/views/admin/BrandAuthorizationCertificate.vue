@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="certificate-container">
     <el-card class="card">
       <div class="title">【品牌授权证书管理】</div>
       <div class="center">
@@ -7,20 +7,19 @@
         <div class="search-bar">
           <el-input v-model="searchQuery" placeholder="请输入证书名称" clearable class="search-input"></el-input>
           <el-button type="primary" @click="searchCertificates" class="search-button">搜索</el-button>
-          <el-button type="success" @click="showAddCertificateDialog">新增证书</el-button>
+          <el-button type="success" @click="showAddCertificateDialog" class="search-button">新增证书</el-button>
         </div>
         <!-- 列表 -->
-        <el-table :data="certificates" style="width: 100%" stripe>
+        <el-table :data="certificates" style="width: 100%" stripe class="certificate-table">
           <el-table-column prop="name" sortable label="证书名称"></el-table-column>
           <el-table-column prop="description" sortable label="证书描述"></el-table-column>
           <el-table-column label="证书图片">
             <template slot-scope="scope">
               <el-image v-if="scope.row.imageUrl" :src="scope.row.imageUrl" :preview-src-list="[scope.row.imageUrl]"
-                @error="handleImageError" style="width: 100px; 
-                height: 100px;" />
+                @error="handleImageError" style="width: 80px; height: 80px;" />
             </template>
           </el-table-column>
-          <el-table-column label="操作">
+          <el-table-column label="操作" width="160">
             <template slot-scope="scope">
               <el-button size="mini" @click="editCertificate(scope.row)">编辑</el-button>
               <el-button size="mini" type="danger" @click="confirmDeleteCertificate(scope.row)">删除</el-button>
@@ -28,8 +27,13 @@
           </el-table-column>
         </el-table>
         <!-- 分页 -->
-        <el-pagination @current-change="handlePageChange" :current-page="currentPage" :page-size="pageSize"
-          layout="total, prev, pager, next" :total="totalCertificates">
+        <el-pagination
+          @current-change="handlePageChange"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          layout="total, prev, pager, next"
+          :total="totalCertificates"
+          class="pagination">
         </el-pagination>
       </div>
     </el-card>
@@ -282,39 +286,67 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.certificate-container {
+  padding: 20px;
+}
+
 .card {
   min-height: 500px;
+}
 
-  .title {
-    width: 200px;
-  }
-
-  @media (max-width: 768px) {
-    .title {
-      width: 80px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .title {
-      width: 60px;
-    }
-  }
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .search-bar {
-  margin: 20px 0;
   display: flex;
-  align-items: center; // 垂直居中
-  justify-content: flex-start; // 左对齐
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
 .search-input {
-  margin-right: 10px; // 输入框右侧间距
-  width: 400px;
+  flex: 1;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 .search-button {
-  margin-right: 5px; // 搜索按钮右侧间距
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.certificate-table {
+  margin-bottom: 20px;
+}
+
+.pagination {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .certificate-container {
+    padding: 10px;
+  }
+
+  .search-bar {
+    flex-direction: column;
+  }
+
+  .search-input,
+  .search-button {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .el-table {
+    font-size: 12px;
+  }
+
+  .el-button--mini {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
 }
 </style>

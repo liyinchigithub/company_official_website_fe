@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="info-container">
         <el-card class="card">
             <div class="title">【基础信息配置】</div>
             <div class="center">
@@ -174,28 +174,51 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card {
-    min-height: 500px;
-
-    .title {
-        width: 200px;
-        // background: linear-gradient(to right, #1E6BDC, #FFFEFF);
-    }
-
-    @media (max-width: 768px) {
-        .title {
-            width: 80px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .title {
-            width: 60px;
-        }
-    }
+.info-container {
+  padding: 20px;
 }
 
-.input-width {
-    width: 850px; // 统一设置输入框宽度
+.card {
+  min-height: 500px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .info-container {
+    padding: 10px;
+  }
+
+  .el-form-item {
+    margin-bottom: 15px;
+  }
+
+  .el-form-item__label {
+    float: none;
+    display: block;
+    text-align: left;
+    padding: 0 0 10px;
+  }
+
+  .el-form-item__content {
+    margin-left: 0 !important;
+  }
+
+  .el-input {
+    width: 100%;
+  }
+
+  .el-button {
+    width: 100%;
+  }
 }
 </style>

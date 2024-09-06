@@ -295,6 +295,12 @@ export default {
   margin: 0 auto;
 }
 
+@media (max-width: 768px) {
+  .scrolling-content {
+    animation: scroll 10s linear infinite;
+  }
+}
+
 @keyframes scroll {
   0% {
     transform: translateX(100%);

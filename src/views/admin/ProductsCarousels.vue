@@ -135,25 +135,19 @@ export default {
   min-height: 500px;
 
   .title {
-    width: 200px;
-    // background: linear-gradient(to right, #1E6BDC, #FFFEFF);
-  }
-
-  @media (max-width: 768px) {
-    .title {
-      width: 80px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .title {
-      width: 60px;
-    }
+    width: 100%;
+    max-width: 200px;
   }
 }
 
 .save-button {
   margin-top: 20px;
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .card .title {
+    max-width: 100%;
+  }
 }
 </style>

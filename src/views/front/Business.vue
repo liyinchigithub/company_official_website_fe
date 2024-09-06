@@ -20,29 +20,29 @@
             </el-card>
             <el-card class="top">
                 <div class="left">
-                    <img class="top5 full-image" src="../../assets/加盟优势.png"/>
+                    <img class="top5 full-image" src="../../assets/加盟优势.png" />
                 </div>
             </el-card>
             <el-card class="top">
                 <div class="left">
-                    <img class="top5 full-image" src="../../assets/加盟流程.png"/>
+                    <img class="top5 full-image" src="../../assets/加盟流程.png" />
                 </div>
             </el-card>
             <el-card class="top">
                 <div class="form-container">
                     <h2 class="join-title">加盟申请</h2>
-                    <el-form :model="form" label-width="80px">
-                        <el-form-item label="姓名">
-                            <el-input v-model="form.name"></el-input>
+                    <el-form :model="form" :rules="rules" ref="form" label-width="80px">
+                        <el-form-item label="姓名" prop="name">
+                            <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
                         </el-form-item>
-                        <el-form-item label="电话">
-                            <el-input v-model="form.contactInfo"></el-input>
+                        <el-form-item label="电话" prop="contactInfo">
+                            <el-input v-model="form.contactInfo" placeholder="请输入电话"></el-input>
                         </el-form-item>
-                        <el-form-item label="备注">
-                            <el-input type="textarea" v-model="form.description"></el-input>
+                        <el-form-item label="备注" prop="description">
+                            <el-input type="textarea" v-model="form.description" placeholder="请输入备注"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="submitForm">立即申请</el-button>
+                            <el-button type="primary" @click="submitForm('form')">立即申请</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -63,33 +63,65 @@ export default {
     components: { Nav, Footer, Banner },
 
     data() {
+        const validatePhone = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('请输入手机号码'));
+            } else if (!/^1[3-9]\d{9}$/.test(value)) {
+                callback(new Error('请输入正确的手机号码'));
+            } else {
+                callback();
+            }
+        };
         return {
             form: {
                 name: '',
                 contactInfo: '',
                 description: ''
+            },
+            rules: {
+                name: [
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
+                ],
+                contactInfo: [
+                    { required: true, message: '请输入手机号码', trigger: 'blur' },
+                    { validator: validatePhone, trigger: 'blur' }
+                ],
+                description: [
+                    { required: true, message: '请输入备注', trigger: 'blur' }
+                ]
             }
         };
     },
 
     methods: {
-        submitForm() {
-            const businessData = {
-                name: this.form.name,
-                contactInfo: this.form.contactInfo,
-                description: this.form.description,
-                isDeleted: false
-            };
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    const businessData = {
+                        name: this.form.name,
+                        contactInfo: this.form.contactInfo,
+                        description: this.form.description,
+                        isDeleted: false
+                    };
 
-            addBusiness(businessData)
-                .then(response => {
-                    console.log('API request successful:', response);
-                    this.$message.success('申请提交成功');
-                })
-                .catch(error => {
-                    console.error('API request failed:', error);
-                    this.$message.error('申请提交失败');
-                });
+                    addBusiness(businessData)
+                        .then(response => {
+                            console.log('API请求成功:', response);
+                            this.$message.success('申请提交成功');
+                            this.resetForm(formName);
+                        })
+                        .catch(error => {
+                            console.error('API请求失败:', error);
+                            this.$message.error('申请提交失败');
+                        });
+                } else {
+                    console.log('表单验证失败');
+                    return false;
+                }
+            });
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
         }
     }
 };

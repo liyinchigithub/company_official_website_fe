@@ -96,4 +96,22 @@ export default {
   width: 100%;
   height: auto;
 }
+
+@media (max-width: 768px) {
+  .product-card {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) {
+  .product-card {
+    width: calc(33.33% - 20px);
+    margin-right: 20px;
+  }
+
+  .left {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
 </style>

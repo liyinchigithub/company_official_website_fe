@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="carousel-container">
     <el-card class="card">
       <div class="title">【轮播图管理】</div>
       <div class="center">
@@ -11,7 +11,7 @@
         </div>
         
         <!-- 轮播图列表 -->
-        <el-table :data="carousels" style="width: 100%" stripe>
+        <el-table :data="carousels" style="width: 100%" stripe class="carousel-table">
           <el-table-column prop="title" label="标题" sortable></el-table-column>
           <el-table-column label="图片">
             <template slot-scope="scope">
@@ -25,21 +25,22 @@
             </template>
           </el-table-column>
           <el-table-column prop="order" label="排序" sortable></el-table-column>
-          <el-table-column label="操作">
+          <el-table-column label="操作" width="160">
             <template slot-scope="scope">
               <el-button size="mini" @click="editCarousel(scope.row)">编辑</el-button>
               <el-button size="mini" type="danger" @click="confirmDeleteCarousel(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
-
+        
         <!-- 分页 -->
         <el-pagination
           @current-change="handlePageChange"
           :current-page="currentPage"
           :page-size="pageSize"
           layout="total, prev, pager, next"
-          :total="totalCarousels">
+          :total="totalCarousels"
+          class="pagination">
         </el-pagination>
       </div>
     </el-card>
@@ -291,39 +292,67 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.carousel-container {
+  padding: 20px;
+}
+
 .card {
   min-height: 500px;
+}
 
-  .title {
-    width: 200px;
-  }
-
-  @media (max-width: 768px) {
-    .title {
-      width: 80px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .title {
-      width: 60px;
-    }
-  }
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .search-bar {
-  margin: 20px 0;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
 .search-input {
+  flex: 1;
   margin-right: 10px;
-  width: 400px;
+  margin-bottom: 10px;
 }
 
 .search-button {
-  margin-right: 5px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.carousel-table {
+  margin-bottom: 20px;
+}
+
+.pagination {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .carousel-container {
+    padding: 10px;
+  }
+
+  .search-bar {
+    flex-direction: column;
+  }
+
+  .search-input,
+  .search-button {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .el-table {
+    font-size: 12px;
+  }
+
+  .el-button--mini {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
 }
 </style>

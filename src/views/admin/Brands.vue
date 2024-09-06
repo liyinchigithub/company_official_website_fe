@@ -1,29 +1,25 @@
 <template>
-    <div>
-      <el-card class="card">
-        <div class="title">【品牌管理】</div>
-        <div class="center">
-          <!-- 搜索框 -->
+     <div class="brands-container">
+    <el-card class="card">
+      <div class="title">【商品品牌管理】</div>
+      <div class="center">
+        <!-- 搜索框 -->
         <div class="search-bar">
-          <el-input v-model="searchQuery" placeholder="请输入品牌名称" class="search-input"></el-input>
+          <el-input v-model="searchQuery" placeholder="请输入品牌名称" clearable class="search-input"></el-input>
           <el-button type="primary" @click="searchBrands" class="search-button">搜索</el-button>
           <el-button type="success" @click="showAddBrandDialog" class="search-button">新增品牌</el-button>
         </div>
-        <!-- 品牌列表 -->
-        <el-table :data="brands" style="width: 100%" stripe>
-          <el-table-column prop="name" label="品牌名称" sortable> </el-table-column>
+        <!-- 列表 -->
+        <el-table :data="brands" style="width: 100%" stripe class="brand-table">
+          <el-table-column prop="name" sortable label="品牌名称"></el-table-column>
+          <el-table-column prop="description" sortable label="品牌描述"></el-table-column>
           <el-table-column label="品牌Logo">
             <template slot-scope="scope">
-              <el-image
-                style="width: 50px; height: 50px"
-                :src="scope.row.logo"
-                fit="cover"
-                @click="showImageDialog(scope.row.logo)"
-                preview-src-list="[scope.row.logo]"
-              ></el-image>
+              <el-image v-if="scope.row.logo" :src="scope.row.logo" :preview-src-list="[scope.row.logo]"
+                @error="handleImageError" style="width: 80px; height: 80px;" />
             </template>
           </el-table-column>
-          <el-table-column label="操作">
+          <el-table-column label="操作" width="160">
             <template slot-scope="scope">
               <el-button size="mini" @click="editBrand(scope.row)">编辑</el-button>
               <el-button size="mini" type="danger" @click="confirmDeleteBrand(scope.row)">删除</el-button>
@@ -36,7 +32,8 @@
           :current-page="currentPage"
           :page-size="pageSize"
           layout="total, prev, pager, next"
-          :total="totalBrands">
+          :total="totalBrands"
+          class="pagination">
         </el-pagination>
       </div>
     </el-card>
@@ -280,38 +277,42 @@
   
   <style lang="scss" scoped>
   .card {
-    min-height: 500px;
-  
-    .title {
-      width: 200px;
-    }
-  
-    @media (max-width: 768px) {
-      .title {
-        width: 80px;
-      }
-    }
-  
-    @media (max-width: 480px) {
-      .title {
-        width: 60px;
-      }
-    }
+  min-height: 500px;
+
+  .title {
+    width: 200px;
   }
-  
+}
+
 .search-bar {
   margin: 20px 0;
   display: flex;
-  align-items: center; // 垂直居中
-  justify-content: flex-start; // 左对齐
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .search-input {
-  margin-right: 10px; // 输入框右侧间距
-  width: 400px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  max-width: 400px;
 }
 
 .search-button {
-  margin-right: 5px; // 搜索按钮右侧间距
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .card .title {
+    width: 100%;
+  }
+
+  .search-input,
+  .search-button {
+    width: 100%;
+    margin-right: 0;
+  }
 }
   </style>

@@ -63,9 +63,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.banner {
+  width: 100%;
+  overflow: hidden;
+}
+
 @media (max-width: 768px) {
-    .el-carousel {
-        height: 300px;
-    }
+  .el-carousel {
+    height: 300px;
+  }
 }
 </style>

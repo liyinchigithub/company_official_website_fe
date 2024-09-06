@@ -2,7 +2,7 @@
 	<div class="page">
 		<Nav />
 		<el-row class="container">
-			<el-col :span="4">
+			<el-col :xs="24" :sm="6" :md="4" :lg="4" :xl="4">
 				<el-menu :default-active="active" class="menu" @open="handleOpen" @close="handleClose"
 					:collapse="isCollapse" @select="select">
 					<el-submenu index="1">
@@ -76,7 +76,7 @@
 					</el-submenu>
 				</el-menu>
 			</el-col>
-			<el-col :span="20" class="appMain">
+			<el-col :xs="24" :sm="18" :md="20" :lg="20" :xl="20" class="appMain">
 				<router-view />
 			</el-col>
 		</el-row>
@@ -99,9 +99,13 @@ export default {
 	},
 
 	mounted() {
-		this.active = this.$route.fullPath
+		this.active = this.$route.fullPath;
+		this.handleResize();
+		window.addEventListener('resize', this.handleResize);
 	},
-
+	beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
+  	},
 	methods: {
 		handleOpen(key, keyPath) {
 			console.log(key, keyPath);
@@ -109,7 +113,9 @@ export default {
 		handleClose(key, keyPath) {
 			console.log(key, keyPath);
 		},
-
+		handleResize() {
+      this.isCollapse = window.innerWidth <= 768;
+    },
 		select(index) {
 			if (this.$route.path !== index) {
 				this.$router.push(index);
@@ -121,45 +127,42 @@ export default {
 
 <style lang="scss" scoped>
 .page {
-	background: #f4f5fa;
+  background: #f4f5fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-	.container {
-		margin-top: 75px;
-		display: flex;
-		margin-bottom: 15px;
+.container {
+  flex: 1;
+  display: flex;
+  margin-top: 75px;
+  margin-bottom: 15px;
+}
 
-		.menu {
-			.dot {
-				width: 7px;
-				height: 7px;
-				background: #44566C;
-				border-radius: 50%;
-				margin-right: 5px;
-			}
+.menu {
+  height: 100%;
+  border-right: solid 1px #e6e6e6;
+}
 
-			height: 500px;
-		}
+.appMain {
+  padding: 20px;
+  background: #fff;
+}
 
-		.appMain {
-			flex: 1;
-			min-height: 500px;
-			background: #fff;
-		}
-	}
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
 
-	@media (max-width: 768px) {
-		.container {
-			flex-direction: column;
+  .menu {
+    width: 100%;
+    height: auto;
+  }
 
-			.menu {
-				width: 100%;
-				height: auto;
-			}
-
-			.appMain {
-				width: 100%;
-			}
-		}
-	}
+  .appMain {
+    width: 100%;
+    padding: 10px;
+  }
 }
 </style>

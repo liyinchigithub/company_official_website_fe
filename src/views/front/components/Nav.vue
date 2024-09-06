@@ -4,10 +4,16 @@
 			<div class="logo">
 				<img v-if="logoImage" :src="logoImage" alt="logo" height="50px" width="50px" style="margin:15px 0 0 0">
 				<!-- <div v-else style="font-size:26px;margin-right:50px" @click="$router.push('/home')">logo</div> -->
-				<div @click="toDetail(item,i)" :class="$route.path === item.path?'active':''" v-for="(item,i) in navList"
-					:key="i">
-					{{ item.name }}
-				</div>
+        <div class="nav-items">
+          <div 
+            v-for="(item, i) in navList" 
+            :key="i" 
+            @click="toDetail(item, i)" 
+            :class="['nav-item', { 'active': $route.path === item.path }]"
+          >
+            {{ item.name }}
+          </div>
+        </div>
 			</div>
 			<div class="login">
 				<div v-if="!isLogin" class="btn">
@@ -124,35 +130,50 @@ export default {
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   .container {
-    width: 60%;
+    width: 80%; // 增加容器宽度
     margin: 0 auto;
     display: flex;
-    position: relative;
+    justify-content: space-between; // 使用 space-between 来分配空间
+    align-items: center; // 垂直居中对齐
 
     .logo {
       display: flex;
-      width: 80%;
+      align-items: center;
+      flex: 1; // 让 logo 部分占据剩余空间
 
-      div {
-        width: 100px;
+      .nav-items {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+        
+        &::-webkit-scrollbar {
+          display: none; /* WebKit */
+        }
+    }
+  }
+
+  .nav-item {
+        flex: 0 0 auto;
+        padding: 0 15px;
         height: 72px;
         line-height: 72px;
         text-align: center;
         cursor: pointer;
-      }
+        white-space: nowrap;
+        transition: color 0.3s;
 
-      div:hover {
-        width: 100px;
-        text-align: center;
-        cursor: pointer;
-        color: #4c88ff;
+        &:hover, &.active {
+          color: #4c88ff;
+        }
       }
-    }
 
     .login {
-      position: absolute;
-      right: -5%;
       display: flex;
+      align-items: center;
+
 
       .loginOut {
         line-height: 72px;
@@ -191,16 +212,23 @@ export default {
     border-bottom: 3px solid #0b2183;
   }
 
+  
   @media (max-width: 768px) {
-    .container {
-      width: 90%;
-    }
-    .logo {
-      width: 70%;
-    }
-    .login {
-      right: 0;
-    }
+  .container {
+    width: 95%;
+    flex-direction: column;
+    align-items: flex-start;
   }
+
+  .logo {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .login {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
 }
 </style>

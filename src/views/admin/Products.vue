@@ -1,41 +1,48 @@
 <template>
-  <div>
+ <div class="products-container">
     <el-card class="card">
-      <div class="title">【商品配置】</div>
+      <div class="title">【商品管理】</div>
       <div class="center">
-        <!-- 搜索框 -->
+        <!-- 搜索栏 -->
         <div class="search-bar">
-          <el-input v-model="searchQuery" placeholder="请输入商品名称"></el-input>
-          <el-button type="primary" @click="searchProducts">搜索</el-button>
-          <el-button type="success" @click="showAddProductDialog">新增商品</el-button>
+          <el-input v-model="searchQuery" placeholder="请输入商品名称" class="search-input"></el-input>
+          <el-button type="primary" @click="searchProducts" class="search-button">搜索</el-button>
+          <el-button type="success" @click="showAddProductDialog" class="search-button">新增商品</el-button>
         </div>
+        
         <!-- 商品列表 -->
-        <el-table :data="products" style="width: 100%" stripe>
+        <el-table :data="products" style="width: 100%" stripe class="product-table">
           <el-table-column prop="name" label="商品名称" sortable></el-table-column>
-          <el-table-column prop="salePrice" label="销售价格" sortable></el-table-column>
-          <el-table-column prop="stockQuantity" label="库存数量" sortable></el-table-column>
-          <!-- 新增的商品封面图片列 -->
-          <el-table-column label="商品封面图片">
+          <el-table-column label="商品图片">
             <template slot-scope="scope">
               <el-image
-                style="width: 50px; height: 50px"
+                style="width: 80px; height: 80px"
                 :src="scope.row.coverImage"
+                fit="cover"
                 @click="showImageDialog(scope.row.coverImage)"
-                preview-src-list="[scope.row.coverImage]"
+                :preview-src-list="[scope.row.coverImage]"
               ></el-image>
             </template>
           </el-table-column>
-          <!-- 新增的操作列 -->
-          <el-table-column label="操作">
+          <el-table-column prop="salePrice" label="售价" sortable></el-table-column>
+          <el-table-column prop="stockQuantity" label="库存" sortable></el-table-column>
+          <el-table-column label="操作" width="180">
             <template slot-scope="scope">
               <el-button size="mini" @click="viewProduct(scope.row)">查看</el-button>
               <el-button size="mini" type="danger" @click="confirmDeleteProduct(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
+        
         <!-- 分页 -->
-        <el-pagination @current-change="handlePageChange" :current-page="currentPage" :page-size="pageSize"
-          layout="total, prev, pager, next" :total="totalProducts">
+        <el-pagination
+          @current-change="handlePageChange"
+          :current-page="currentPage"
+          :page-size="pageSize"
+          layout="total, prev, pager, next"
+          :total="totalProducts"
+          class="pagination"
+        >
         </el-pagination>
       </div>
     </el-card>
@@ -393,30 +400,67 @@ export default {
 </script>
   
 <style lang="scss" scoped>
+.products-container {
+  padding: 20px;
+}
+
 .card {
   min-height: 500px;
+}
 
-  .title {
-    width: 200px;
-    // background: linear-gradient(to right, #1E6BDC, #FFFEFF);
-  }
-
-  @media (max-width: 768px) {
-    .title {
-      width: 80px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .title {
-      width: 60px;
-    }
-  }
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .search-bar {
-  margin: 20px 0;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.search-button {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.product-table {
+  margin-bottom: 20px;
+}
+
+.pagination {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .products-container {
+    padding: 10px;
+  }
+
+  .search-bar {
+    flex-direction: column;
+  }
+
+  .search-input,
+  .search-button {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .el-table {
+    font-size: 12px;
+  }
+
+  .el-button--mini {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
 }
 </style>
