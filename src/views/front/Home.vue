@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Nav/>
-    <Banner/>
+    <Nav />
+    <Banner />
     <div class="container">
       <el-breadcrumb separator="/" class="top">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -43,55 +43,62 @@
       <!-- 为您提供更多资讯和服务 -->
       <el-card class="top">
         <div class="info-services">
-          <div class="service" @click="navigateTo('https://example.com/shop')">
-            <img src="@/assets/images/icon.png" alt="官方商城" class="service-icon"/>
-            <h3>官方商城</h3>
-            <p>总部直销 优惠畅享</p>
-          </div>
+        <div class="service" @click="showQRCode">
+          <img src="@/assets/images/icon.png" alt="官方商城" class="service-icon" />
+          <h3>官方商城</h3>
+          <p>总部直销 优惠畅享</p>
+        </div>
           <!-- <div class="service" @click="navigateTo('https://example.com/kitchen')">
             <img src="@/assets/images/icon.png" alt="厨房换新" class="service-icon"/>
             <h3>厨房换新</h3>
             <p>享受超值补贴</p>
           </div> -->
           <div class="service" @click="navigateTo('/Business')">
-            <img src="@/assets/images/icon.png" alt="招商加盟" class="service-icon"/>
+            <img src="@/assets/images/icon.png" alt="招商加盟" class="service-icon" />
             <h3>招商加盟</h3>
             <p>稀缺经销席位</p>
           </div>
           <div class="service" @click="showHotline">
-          <img src="@/assets/images/icon.png" alt="服务支持" class="service-icon"/>
-          <h3>服务支持</h3>
-          <p>热线400-887-9882</p>
+            <img src="@/assets/images/icon.png" alt="服务支持" class="service-icon" />
+            <h3>服务支持</h3>
+            <p>热线400-887-9882</p>
           </div>
-          <el-dialog :visible.sync="hotlineVisible" title="服务支持">
-          <div class="hotline-container">
-            <p class="hotline-text">热线电话: 400-887-9882</p>
-            <el-button type="primary" @click="copyToClipboard('400-887-9882')">复制</el-button>
-          </div>
-        </el-dialog>
+         
         </div>
       </el-card>
       <!-- 新增自动滚动模块 -->
       <el-card class="top">
-      <div class="scrolling-container">
-      <div class="scrolling-content" v-for="certificate in certificates" :key="certificate.id">
-        <img :src="certificate.imageUrl" :alt="certificate.name" class="certificate-image"/>
-        <h3>{{ certificate.name }}</h3>
-        <p>{{ certificate.description }}</p>
-      </div>
-    </div>
-   </el-card>
+        <div class="scrolling-container">
+          <div class="scrolling-content" v-for="certificate in certificates" :key="certificate.id">
+            <img :src="certificate.imageUrl" :alt="certificate.name" class="certificate-image" />
+            <h3>{{ certificate.name }}</h3>
+            <p>{{ certificate.description }}</p>
+          </div>
+        </div>
+      </el-card>
       <!-- 新增的商品卡片轮播图组件 -->
       <!-- <ProductCarousel /> -->
     </div>
-    <Footer class="top"/>
+    <el-dialog :visible.sync="hotlineVisible" title="服务支持">
+            <div class="hotline-container">
+              <p class="hotline-text">热线电话: 400-887-9882</p>
+              <el-button type="primary" @click="copyToClipboard('400-887-9882')">复制</el-button>
+            </div>
+          </el-dialog>
+    <el-dialog :visible.sync="qrCodeVisible" title="官方商城" width="30%">
+      <div class="qr-code-container">
+        <img v-if="footerData" :src="footerData.weChatImage" style="width: 150px; height: 150px" />
+        <p>扫描二维码进入官方商城</p>
+      </div>
+    </el-dialog>
+    <Footer class="top" />
   </div>
 </template>
 
 <script>
 import Banner from './components/Banner'
 import ProductCarousel from './components/ProductCarousel' // 引入新组件
-import { getAllCertificates,getFooterData } from '@/api/index' // 引入API方法
+import { getAllCertificates, getFooterData } from '@/api/index' // 引入API方法
 export default {
   name: 'Home',
   components: {
@@ -105,14 +112,17 @@ export default {
       homeTitle: '',
       homeDescription: '',
       hotlineVisible: false,// 服务支持弹窗
-      certificates: [] // 存储证书数据
+      certificates: [], // 存储证书数据
+      qrCodeVisible: false,
+      footerData: null
     };
   },
   mounted() {
     this.fetchHomeData();
     this.fetchCertificates();
+    this.fetchFooterData();
   },
-  created() {},
+  created() { },
   methods: {
     navigateTo(url) {
       window.location.href = url;
@@ -149,6 +159,19 @@ export default {
         console.error('获取首页数据失败:', error);
       }
     },
+    showQRCode() {
+      this.qrCodeVisible = true;
+    },
+    async fetchFooterData() {
+      try {
+        const response = await getFooterData();
+        if (response && response.data && response.data.length > 0) {
+          this.footerData = response.data[0];
+        }
+      } catch (error) {
+        console.error('获取页脚数据失败:', error);
+      }
+    }
   },
 };
 </script>
@@ -161,9 +184,12 @@ export default {
 }
 
 .hotline-text {
-  font-size: 18px; /* Increase font size */
-  user-select: text; /* Make text selectable */
+  font-size: 18px;
+  /* Increase font size */
+  user-select: text;
+  /* Make text selectable */
 }
+
 .page {
   display: flex;
   flex-direction: column;
@@ -322,8 +348,22 @@ export default {
   0% {
     transform: translateX(100%);
   }
+
   100% {
     transform: translateX(-100%);
+  }
+}
+
+.qr-code-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
   }
 }
 </style>
