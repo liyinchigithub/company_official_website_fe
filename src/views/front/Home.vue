@@ -125,7 +125,8 @@ export default {
   created() { },
   methods: {
     navigateTo(url) {
-      window.location.href = url;
+      // window.location.href = url;
+      this.$router.push(url);
     },
     showHotline() {
       this.hotlineVisible = true;
